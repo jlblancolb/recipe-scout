@@ -2,13 +2,13 @@
 
 Goal: when a merchant sells recipes (patterns, plans, formulas, schematics, recipes, manuals), show at a glance what each one makes (slot: Feet, Chest, Back…) and whether you already know it, and let you filter all pages at once. Prompted by Merchant's Favor vendors on WoW Forever (e.g. Jim'bek, 7 pages of patterns). Built for Forever first (Mainline UI, interface `16001`, client 1.60.1) and loading on Classic Era too (`11509`), same as YardsToKm and DistanceToTarget.
 
-Status: probe run on Jim'bek 2026-11-23; MVP checked in-game 2026-11-23 (Jim'bek, enchanting vendor). Filter panel checked in-game 2026-11-23. Next: alts and appearances, or release prep.
+Status: probe run on Jim'bek 2026-11-23; MVP checked in-game 2026-11-23 (Jim'bek, enchanting vendor). Filter panel checked in-game 2026-11-23. 0.1.0 released on GitHub 2026-11-23. Next: CurseForge project (maintainer), then alts or appearances.
 
 ## 0. Decisions
 
 - [x] **Standalone addon:** its own addon, not part of Mastercraft or Polestar (those belong to others). It should run alongside them without conflicts (2026-11-23)
 - [x] **Scope:** every recipe type, not only tailoring patterns (2026-11-23)
-- [~] **Name:** "RecipeScout" is a working name; check CurseForge for clashes before publishing (maintainer)
+- [x] **Name:** "RecipeScout"; no addon with that name on CurseForge, closest are Recipe Radar / Recipe Tracker (2026-11-23)
 - [ ] **Merchants only, or bags/AH too:** start with merchants; decide later if badges should also show in bags and the auction house
 - [x] **Similar addons checked (2026-11-23):** none shows the crafted item's slot on recipes in the merchant window. Build only that gap and work alongside the others; don't hide items or re-layout pages, so Known Item Filter's hide mode keeps working
   - FavorCraft (Forever, 626 downloads, MIT, beta): own `/fc` window with a built-in database of 309 Favor recipes, class/build filter, Favor purchase planner, shopping list; syncs learned recipes per character. Not in the merchant window, no slot filter
@@ -36,13 +36,13 @@ The hard part is finding which item a recipe makes, and its slot, without a big 
 
 ## 2. MVP
 
-- [ ] **Release skeleton:** TOC `## Interface: 11509, 16001`, `.pkgmeta`, `.luacheckrc`, `scripts/test.sh`, `scripts/package.py`, CI workflow, README, CHANGELOG (copy from DistanceToTarget)
+- [x] **Release skeleton:** TOC `## Interface: 16001` only (Classic Era lacks `C_TooltipInfo`), icon 134939, `.pkgmeta`, `.luacheckrc`, `scripts/test.sh` (+ luacheck), `scripts/package.py`, CI workflow, README, CHANGELOG, CONTRIBUTING (2026-11-23)
 - [x] **Core:** `Recipe.lua` (parse tooltip data, label) + `RecipeScout.lua` (overlay, hooks, `/rs` lists every recipe on the merchant); `tests/recipe.lua` with probe-shaped data, passes on fengari; `scripts/install.sh` copies to the Forever AddOns folder; installed (2026-11-23)
 - [x] **Slot badge:** short slot label on each merchant button (`FEET`, `CHEST`, `BACK`…), localized slot name from the crafted item (`Feet`, `Hands`), subtype for non-gear (`Reagent Bag`, `Potion`); crafted ID cached per recipe (2026-11-23)
 - [x] **Known colours:** green check on the icon, green badge, soft green wash over the row; red left to Blizzard (2026-11-23)
 - [x] **Known ≠ green name:** uncommon recipes already have green names (enchanting vendor screenshot), so names keep their quality colour and "known" is the check + row wash (2026-11-23)
 - [x] **Short slot names:** "Held In Off-hand" overflowed the icon; now `Off Hand` (`SECONDARYHANDSLOT`), also main hand and robe → chest (2026-11-23)
-- [ ] **No taint:** hook with `hooksecurefunc` after the merchant updates, no changes to Blizzard functions; check with `/console scriptErrors 1` and alongside Mastercraft/Polestar
+- [x] **No taint:** hook with `hooksecurefunc` after the merchant updates, no changes to Blizzard functions; no errors seen alongside Mastercraft/Polestar (2026-11-23)
 - [x] **In-game check on Forever:** badges readable, known recipe marked, no errors seen (2026-11-23, maintainer screenshots)
 
 ## 3. Filter across pages
@@ -60,4 +60,8 @@ The hard part is finding which item a recipe makes, and its slot, without a big 
 
 ## 5. Release
 
-- [ ] **GitHub repo under `jlblancolb`, CurseForge project, 1.0.0** (maintainer approves names and publishing)
+- [x] **GitHub:** public repo https://github.com/jlblancolb/recipe-scout; CI green (luacheck 0 warnings, tests on Lua 5.1) (2026-11-23)
+- [x] **Release 0.1.0:** [v0.1.0](https://github.com/jlblancolb/recipe-scout/releases/tag/v0.1.0), `RecipeScout-0.1.0.zip` attached by CI and checked (7 files) (2026-11-23)
+- [ ] **CurseForge project:** create "RecipeScout", game version 1.60.1 (Forever), MIT, description from README, upload `RecipeScout-0.1.0.zip` by hand (maintainer)
+- [ ] **CurseForge auto-upload:** Source = GitHub repo, tagged commits only; GitHub push webhook to `curseforge.com/api/projects/<id>/package` with the same API token as YardsToKm/DistanceToTarget. Then: bump TOC version, tag `vX.Y.Z`, push the tag. Don't re-push `v0.1.0`
+- [ ] **Screenshots for CurseForge:** maintainer's 2026-11-23 shots (panel + Feet filter + enchanting badges) are good candidates
