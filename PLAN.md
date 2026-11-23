@@ -80,4 +80,4 @@ The hard part is finding which item a recipe makes, and its slot, without a big 
 - [x] **In-game check of the names:** "Durga" next to the price, "Durga · Chest" in the panel, colour key shown (2026-11-23, maintainer screenshot)
 - [x] **Alts screenshot:** `media/screenshots/alts.png`, plus an "Your alts" section in the description and README (2026-11-23)
 - [x] **Release 0.2.0:** alts, enchant slot names, buttons that fit; tooltip "Known by: Durga" checked in-game; tag `v0.2.0` (2026-11-23)
-- [ ] **CurseForge 0.2.0 file:** confirm it builds from the tag (maintainer)
+- [x] **CurseForge 0.2.0 file:** built from the tag, description and 5 screenshots uploaded (2026-11-23, maintainer)
