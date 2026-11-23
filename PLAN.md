@@ -64,6 +64,7 @@ The hard part is finding which item a recipe makes, and its slot, without a big 
 - [x] **Release 0.1.0:** [v0.1.0](https://github.com/jlblancolb/recipe-scout/releases/tag/v0.1.0), `RecipeScout-0.1.0.zip` attached by CI and checked (7 files) (2026-11-23)
 - [x] **CurseForge project:** RecipeScout, project ID 1826026; summary, categories (Professions + Auction & Economy), logo and client-neutral description from `media/` (2026-11-23, maintainer)
 - [x] **CurseForge auto-upload:** GitHub push webhook to `curseforge.com/api/projects/1826026/package` with the same account API token as YardsToKm/DistanceToTarget (hook 715767243), ping 200 OK; CurseForge Source = GitHub repo, tagged commits only (maintainer) (2026-11-23). Future releases: bump the TOC version and CHANGELOG, tag `vX.Y.Z`, push the tag. Don't re-push `v0.1.0`
-- [ ] **0.1.0 on CurseForge:** confirm whether it was uploaded by hand; if not, release 0.1.1 by tag
+- [x] **Release 0.1.1:** first CurseForge release by tag (not uploaded by hand); tag `v0.1.1` pushed, webhook 200 OK; [v0.1.1](https://github.com/jlblancolb/recipe-scout/releases/tag/v0.1.1) with `RecipeScout-0.1.1.zip` attached by CI (2026-11-23)
+- [ ] **CurseForge 0.1.1 file:** confirm it's built and live as Release with 1.60.1 (maintainer)
 - [x] **Logo and description:** `media/icon.svg` → `icon-512.png`, `icon-400.png`: option B "slot badge" (pattern icon with a FEET strip + green check, navy/gold like DistanceToTarget), picked from 5 candidates in `media/variants/` (2026-11-23), `media/curseforge-description.md` (2026-11-23)
 - [ ] **Screenshots for CurseForge:** maintainer's 2026-11-23 shots (panel + Feet filter + enchanting badges) are good candidates
