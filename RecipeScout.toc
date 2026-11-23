@@ -7,5 +7,6 @@
 ## SavedVariables: RecipeScoutDB
 
 Recipe.lua
+Alts.lua
 Panel.lua
 RecipeScout.lua

@@ -35,20 +35,49 @@ function Recipe.IsRecipe(itemID)
     return classID == RECIPE_CLASS
 end
 
--- Parses tooltip data into { crafted = itemID or nil, known = bool }.
+-- "Requires %s (%d)" (ITEM_MIN_SKILL) as a Lua pattern capturing profession and level.
+local skillPattern
+local function SkillPattern()
+    if skillPattern then return skillPattern end
+    local template = Text(ITEM_MIN_SKILL) or "Requires %s (%d)"
+    local escaped = template:gsub("[%(%)%.%+%-%*%?%[%]%^%$]", "%%%0")
+    skillPattern = "^" .. escaped:gsub("%%s", "(.+)"):gsub("%%d", "(%%d+)") .. "$"
+    return skillPattern
+end
+Recipe.SkillPattern = SkillPattern
+
+-- The recipe's name without its "Pattern: " style prefix, lower-cased for matching.
+function Recipe.ShortName(name)
+    name = Text(name)
+    if not name then return nil end
+    return (name:match("^[^:]+:%s*(.+)$") or name):lower()
+end
+
+-- Parses tooltip data into { crafted, known, spell, reqProf, reqSkill, name }.
+-- The crafted item comes first as a nested line; the recipe's own "Use: Teaches..."
+-- spell and its profession requirement come after it, so the last match wins for those.
 function Recipe.Parse(data)
     local result = { known = false }
     if type(data) ~= "table" or type(data.lines) ~= "table" then return result end
     local knownText = Text(ITEM_SPELL_KNOWN) or "Already known"
-    for _, line in ipairs(data.lines) do
+    for index, line in ipairs(data.lines) do
         local id = line.tooltipID
         if not result.crafted and type(id) == "number" and not isSecret(id)
             and (line.tooltipType == nil or line.tooltipType == 0) then
             result.crafted = id
         end
-        if Text(line.leftText) == knownText then
+        local spell = line.spellID
+        if type(spell) == "number" and not isSecret(spell) then result.spell = spell end
+        local text = Text(line.leftText)
+        if text == knownText then
             result.known = true
+        elseif text then
+            local prof, level = text:match(SkillPattern())
+            if prof then
+                result.reqProf, result.reqSkill = prof, tonumber(level)
+            end
         end
+        if index == 1 then result.name = Recipe.ShortName(text) end
     end
     return result
 end
@@ -102,6 +131,7 @@ function Recipe.ForMerchantItem(index)
     local name = data and data.lines and data.lines[1] and data.lines[1].leftText
     info.recipeID = recipeID
     info.label = Recipe.Label(info.crafted, name)
+    if ns.Alts then info.alts = ns.Alts.For(info) end
     return info
 end
 

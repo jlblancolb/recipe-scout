@@ -6,6 +6,7 @@ local _, ns = ...
 local Recipe = ns.Recipe
 
 local KNOWN = { 0.25, 1.0, 0.25 }
+local ALT = { 1.0, 0.82, 0.0 }
 local CHECK_TEXTURE = "Interface\\RaidFrame\\ReadyCheck-Ready"
 
 local overlays = {}
@@ -84,15 +85,24 @@ local function Update()
         local info = index <= count and Recipe.ForMerchantItem(index) or nil
         local overlay = Overlay(slot)
         if overlay then
-            if info and (info.label or info.known) then
+            local altKnown = info and not info.known and info.alts and #info.alts.known > 0
+            if info and (info.label or info.known or altKnown) then
                 overlay.label:SetText(info.label or "")
                 overlay.strip:SetShown(info.label ~= nil)
-                if info.known then
-                    overlay.label:SetTextColor(KNOWN[1], KNOWN[2], KNOWN[3])
+                local color = info.known and KNOWN or altKnown and ALT or nil
+                if color then
+                    overlay.label:SetTextColor(color[1], color[2], color[3])
                 else
                     overlay.label:SetTextColor(1, 1, 1)
                 end
-                overlay.check:SetShown(info.known)
+                -- Green check: you know it. Yellow check: an alt does.
+                overlay.check:SetDesaturated(altKnown and true or false)
+                if altKnown then
+                    overlay.check:SetVertexColor(ALT[1], ALT[2], ALT[3])
+                else
+                    overlay.check:SetVertexColor(1, 1, 1)
+                end
+                overlay.check:SetShown(info.known or altKnown)
                 overlay.tint:SetShown(info.known)
                 overlay.frame:Show()
             else
@@ -135,9 +145,28 @@ end)
 
 SLASH_RECIPESCOUT1 = "/rs"
 SLASH_RECIPESCOUT2 = "/recipescout"
-SlashCmdList.RECIPESCOUT = function()
+local function Say(message)
+    DEFAULT_CHAT_FRAME:AddMessage("|cff66ccffRecipeScout|r " .. message)
+end
+
+SlashCmdList.RECIPESCOUT = function(message)
+    local command, rest = (message or ""):match("^%s*(%S*)%s*(.-)%s*$")
+    command = (command or ""):lower()
+    if command == "alts" then
+        local lines = ns.Alts.Summary()
+        if #lines == 0 then Say("no characters recorded yet: open a profession window on each crafter.") end
+        for _, line in ipairs(lines) do Say(line) end
+        return
+    elseif command == "forget" then
+        local key = ns.Alts.Forget(rest)
+        Say(key and ("forgot " .. key) or "no character called '" .. (rest or "") .. "'. /rs alts lists them.")
+        return
+    elseif command ~= "" then
+        Say("/rs lists recipes on the open merchant, /rs alts lists your characters, /rs forget <name> removes one.")
+        return
+    end
     if not (MerchantFrame and MerchantFrame:IsShown()) then
-        DEFAULT_CHAT_FRAME:AddMessage("|cff66ccffRecipeScout|r open a merchant to see recipe slots.")
+        Say("open a merchant to see recipe slots. /rs alts lists your characters.")
         return
     end
     local shown = 0
@@ -145,9 +174,13 @@ SlashCmdList.RECIPESCOUT = function()
         local info = Recipe.ForMerchantItem(index)
         if info then
             shown = shown + 1
-            DEFAULT_CHAT_FRAME:AddMessage(string.format("|cff66ccffRecipeScout|r %d: %s%s", index,
-                info.label or "?", info.known and " |cff40ff40(known)|r" or ""))
+            local alts = ""
+            if info.alts and #info.alts.known > 0 then
+                alts = " |cffffd100(alt: " .. table.concat(info.alts.known, ", ") .. ")|r"
+            end
+            local known = info.known and " |cff40ff40(known)|r" or ""
+            Say(string.format("%d: %s%s%s", index, info.label or "?", known, alts))
         end
     end
-    DEFAULT_CHAT_FRAME:AddMessage("|cff66ccffRecipeScout|r " .. shown .. " recipes on this merchant.")
+    Say(shown .. " recipes on this merchant.")
 end

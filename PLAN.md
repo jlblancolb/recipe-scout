@@ -54,7 +54,8 @@ The hard part is finding which item a recipe makes, and its slot, without a big 
 
 ## 4. Alts and appearances
 
-- [ ] **Alt recipes:** save each character's known recipes when their profession window opens (SavedVariables); yellow when an alt knows it, names in the tooltip
+- [~] **Alt recipes:** `Alts.lua` records each character's learned recipes (crafted item ID, recipe spell ID, recipe name) per profession when a profession window opens, plus profession skill at login; yellow check/text on the merchant and panel when an alt knows it; recipe tooltip lines "Known by", "Can learn", "Skill too low" (bags and AH too); `/rs alts`, `/rs forget <name>`
+- [ ] **In-game check of alts:** open each crafter's profession window once, then a recipe merchant; check `/rs alts` counts and the tooltip lines (maintainer)
 - [ ] **Appearance collected:** use the transmog API if the probe shows it answers
 - [ ] **Settings panel and addon compartment:** same pattern as DistanceToTarget
 

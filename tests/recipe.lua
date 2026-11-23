@@ -99,6 +99,15 @@ DEFAULT_CHAT_FRAME = { AddMessage = function(_, message) chat[#chat + 1] = messa
 
 local ns = {}
 assert(loadfile("Recipe.lua"))("RecipeScout", ns)
+function UnitName() return "Jaina" end
+function GetRealmName() return "Nightslayer" end
+function UnitClass() return "Mage", "MAGE" end
+function time() return 0 end
+unpack = unpack or table.unpack
+-- An alt that knows Silky Boots (crafted item 253891).
+RecipeScoutDB = { chars = { ["Durga-Nightslayer"] = { name = "Durga", realm = "Nightslayer", skills = {},
+    profs = { Tailoring = { items = { [253891] = true }, spells = {}, names = {} } } } } }
+assert(loadfile("Alts.lua"))("RecipeScout", ns)
 assert(loadfile("Panel.lua"))("RecipeScout", ns)
 assert(loadfile("RecipeScout.lua"))("RecipeScout", ns)
 local R = ns.Recipe
@@ -132,6 +141,9 @@ check(Overlay(1) and ns.Update, "overlay exists")
 SlashCmdList.RECIPESCOUT()
 check(chat[#chat]:find("4 recipes"), "slash command counts 4 recipes, got: " .. chat[#chat])
 check(chat[2]:find("Hands") and chat[2]:find("known"), "slash lists gloves as known")
+check(chat[1]:find("Feet") and chat[1]:find("alt: Durga"), "slash shows the alt who knows Silky Boots, got: " .. chat[1])
+boots = R.ForMerchantItem(1)
+check(boots.alts and #boots.alts.known == 1, "merchant info carries alt matches")
 
 -- Panel: opens on merchant show with every recipe, filters by slot, search and hide known.
 local events

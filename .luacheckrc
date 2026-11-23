@@ -5,10 +5,18 @@ exclude_files = { "probe/data" }
 local wow = {
     "C_Item", "C_MerchantFrame", "C_Timer", "C_TooltipInfo", "CreateFrame", "DEFAULT_CHAT_FRAME", "GameTooltip",
     "GetItemInfoInstant", "GetMerchantItemID", "GetMerchantNumItems", "hooksecurefunc", "issecretvalue",
-    "ITEM_SPELL_KNOWN", "MERCHANT_ITEMS_PER_PAGE", "MerchantFrame_Update", "STANDARD_TEXT_FONT", "wipe",
+    "ITEM_SPELL_KNOWN", "ITEM_MIN_SKILL", "MERCHANT_ITEMS_PER_PAGE", "MerchantFrame_Update", "STANDARD_TEXT_FONT",
+    "wipe",
 }
 
 files["Recipe.lua"] = { read_globals = wow }
+files["Alts.lua"] = {
+    globals = { "RecipeScoutDB" },
+    read_globals = { "C_TradeSkillUI", "Enum", "GetNumSkillLines", "GetNumTradeSkills", "GetProfessionInfo",
+        "GetProfessions", "GetRealmName", "GetSkillLineInfo", "GetTradeSkillInfo", "GetTradeSkillItemLink",
+        "GetTradeSkillLine", "GetTradeSkillRecipeLink", "ItemRefTooltip", "RAID_CLASS_COLORS", "TooltipDataProcessor",
+        "UnitClass", "UnitName", "time", "unpack", unpack(wow) },
+}
 files["Panel.lua"] = { globals = { "RecipeScoutDB", "MerchantFrame" }, read_globals = wow }
 files["RecipeScout.lua"] = {
     globals = { "SLASH_RECIPESCOUT1", "SLASH_RECIPESCOUT2", "SlashCmdList" },

@@ -40,6 +40,7 @@ local function Collect()
             name = Plain(name) or ""
             entries[#entries + 1] = {
                 index = index, label = info.label or "?", known = info.known, usable = usable ~= false,
+                altKnown = not info.known and info.alts ~= nil and #info.alts.known > 0,
                 name = name, short = name:match("^[^:]+:%s*(.+)$") or name, icon = icon,
             }
         end
@@ -147,10 +148,14 @@ function Panel.Refresh()
             local row = Row(shown)
             row.index = entry.index
             row.icon:SetTexture(entry.icon)
-            row.check:SetShown(entry.known)
+            row.check:SetShown(entry.known or entry.altKnown)
+            row.check:SetDesaturated(entry.altKnown)
+            if entry.altKnown then row.check:SetVertexColor(1, 0.82, 0) else row.check:SetVertexColor(1, 1, 1) end
             row.name:SetText(entry.short)
             if entry.known then
                 row.name:SetTextColor(KNOWN[1], KNOWN[2], KNOWN[3])
+            elseif entry.altKnown then
+                row.name:SetTextColor(1, 0.82, 0)
             elseif not entry.usable then
                 row.name:SetTextColor(1, 0.3, 0.3)
             else
