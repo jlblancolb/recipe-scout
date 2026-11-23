@@ -32,4 +32,4 @@ files["probe"] = {
 }
 
 -- Tests install WoW API mocks as globals and read them back.
-files["tests"] = { allow_defined_top = true, ignore = { "11", "12", "13", "211", "212", "213", "431", "432" } }
+files["tests"] = { allow_defined_top = true, max_line_length = 140, ignore = { "11", "12", "13", "143", "211", "212", "213", "431", "432" } }
