@@ -1,70 +1,21 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
-  <defs>
-    <radialGradient id="bg" cx="50%" cy="45%" r="70%">
-      <stop offset="0" stop-color="#1d3550"/>
-      <stop offset="1" stop-color="#0a1322"/>
-    </radialGradient>
-    <linearGradient id="frame" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#f3d58a"/>
-      <stop offset="0.5" stop-color="#b8862e"/>
-      <stop offset="1" stop-color="#6e4c17"/>
-    </linearGradient>
-    <linearGradient id="paper" x1="0" y1="0" x2="1" y2="0">
-      <stop offset="0" stop-color="#d9c08c"/>
-      <stop offset="0.5" stop-color="#f4e6c0"/>
-      <stop offset="1" stop-color="#d2b57c"/>
-    </linearGradient>
-    <linearGradient id="roll" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0" stop-color="#f4e6c0"/>
-      <stop offset="0.55" stop-color="#d2b57c"/>
-      <stop offset="1" stop-color="#8f6d36"/>
-    </linearGradient>
-    <radialGradient id="lens" cx="40%" cy="35%" r="70%">
-      <stop offset="0" stop-color="#5fd3c8" stop-opacity="0.45"/>
-      <stop offset="1" stop-color="#1d3550" stop-opacity="0.92"/>
-    </radialGradient>
-    <radialGradient id="ok" cx="40%" cy="35%" r="70%">
-      <stop offset="0" stop-color="#6ff07a"/>
-      <stop offset="1" stop-color="#1e9a33"/>
-    </radialGradient>
-  </defs>
-  <rect x="8" y="8" width="496" height="496" rx="72" fill="url(#bg)"/>
-  <rect x="8" y="8" width="496" height="496" rx="72" fill="none" stroke="url(#frame)" stroke-width="16"/>
-
-  <!-- recipe scroll -->
-  <g transform="rotate(-10 200 260)">
-    <rect x="96" y="112" width="200" height="290" fill="url(#paper)"/>
-    <g stroke="#8f6d36" stroke-width="9" stroke-linecap="round" opacity="0.7">
-      <line x1="126" y1="160" x2="262" y2="160"/>
-      <line x1="126" y1="196" x2="236" y2="196"/>
-      <line x1="126" y1="232" x2="256" y2="232"/>
-      <line x1="126" y1="268" x2="222" y2="268"/>
-      <line x1="126" y1="304" x2="250" y2="304"/>
-      <line x1="126" y1="340" x2="206" y2="340"/>
-    </g>
-    <rect x="80" y="92" width="232" height="34" rx="17" fill="url(#roll)" stroke="#6e4c17" stroke-width="4"/>
-    <rect x="80" y="388" width="232" height="34" rx="17" fill="url(#roll)" stroke="#6e4c17" stroke-width="4"/>
-    <!-- wax seal ribbon -->
-    <path d="M250 404 l-8 62 l20 -14 l20 14 l-8 -62 z" fill="#b8282a"/>
-    <circle cx="262" cy="402" r="20" fill="#d23a30" stroke="#8e1d1d" stroke-width="4"/>
-  </g>
-
-  <!-- magnifier handle -->
-  <line x1="398" y1="318" x2="462" y2="392" stroke="#0a1322" stroke-width="40" stroke-linecap="round"/>
-  <line x1="398" y1="318" x2="462" y2="392" stroke="url(#frame)" stroke-width="28" stroke-linecap="round"/>
-  <!-- lens -->
-  <circle cx="330" cy="238" r="104" fill="url(#lens)"/>
-  <!-- boot inside the lens -->
-  <path d="M298 170 Q326 164 354 170 Q350 214 352 250 Q360 264 384 270 Q410 278 410 300 L410 304 L346 304 L340 316 L306 316 L300 304 L292 304 Q284 236 298 170 Z"
-        fill="#f3d58a" stroke="#0a1322" stroke-width="5" stroke-linejoin="round"/>
-  <path d="M296 192 Q326 186 354 192" fill="none" stroke="#b8862e" stroke-width="9"/>
-  <path d="M352 252 Q340 262 344 276" fill="none" stroke="#b8862e" stroke-width="5" stroke-linecap="round"/>
-  <!-- lens rim and shine -->
-  <circle cx="330" cy="238" r="104" fill="none" stroke="#0a1322" stroke-width="26"/>
-  <circle cx="330" cy="238" r="104" fill="none" stroke="url(#frame)" stroke-width="16"/>
-  <path d="M262 196 A76 76 0 0 1 300 160" fill="none" stroke="#ffffff" stroke-width="8" stroke-linecap="round" opacity="0.55"/>
-
-  <!-- known check -->
-  <circle cx="122" cy="404" r="50" fill="url(#ok)" stroke="#0a1322" stroke-width="7"/>
-  <path d="M98 404 L116 424 L150 384" fill="none" stroke="#ffffff" stroke-width="13" stroke-linecap="round" stroke-linejoin="round"/>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512"><defs>
+<radialGradient id="bg" cx="50%" cy="45%" r="70%"><stop offset="0" stop-color="#1d3550"/><stop offset="1" stop-color="#0a1322"/></radialGradient>
+<linearGradient id="frame" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f3d58a"/><stop offset="0.5" stop-color="#b8862e"/><stop offset="1" stop-color="#6e4c17"/></linearGradient>
+<linearGradient id="paper" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#d9c08c"/><stop offset="0.5" stop-color="#f4e6c0"/><stop offset="1" stop-color="#d2b57c"/></linearGradient>
+<linearGradient id="roll" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f4e6c0"/><stop offset="0.55" stop-color="#d2b57c"/><stop offset="1" stop-color="#8f6d36"/></linearGradient>
+<radialGradient id="lens" cx="40%" cy="35%" r="70%"><stop offset="0" stop-color="#5fd3c8" stop-opacity="0.45"/><stop offset="1" stop-color="#1d3550" stop-opacity="0.92"/></radialGradient>
+<radialGradient id="ok" cx="40%" cy="35%" r="70%"><stop offset="0" stop-color="#6ff07a"/><stop offset="1" stop-color="#1e9a33"/></radialGradient>
+<radialGradient id="glow" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="#ffd86b" stop-opacity="0.9"/><stop offset="1" stop-color="#ffd86b" stop-opacity="0"/></radialGradient>
+<linearGradient id="slot" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2a3b52"/><stop offset="1" stop-color="#121c2b"/></linearGradient>
+</defs><rect x="8" y="8" width="496" height="496" rx="72" fill="url(#bg)"/>
+<rect x="96" y="96" width="320" height="320" rx="28" fill="url(#slot)" stroke="url(#frame)" stroke-width="10"/>
+<g transform="translate(126 112) scale(2.6)">
+<rect x="18" y="14" width="64" height="72" fill="url(#paper)"/>
+<g stroke="#8f6d36" stroke-width="5" stroke-linecap="round" opacity="0.7"><line x1="28" y1="34" x2="70" y2="34"/><line x1="28" y1="48" x2="62" y2="48"/><line x1="28" y1="62" x2="68" y2="62"/></g>
+<rect x="10" y="6" width="80" height="16" rx="8" fill="url(#roll)" stroke="#6e4c17" stroke-width="3"/>
+<rect x="10" y="78" width="80" height="16" rx="8" fill="url(#roll)" stroke="#6e4c17" stroke-width="3"/>
+<path d="M64 84 l-4 18 l8 -5 l8 5 l-4 -18z" fill="#b8282a"/><circle cx="68" cy="84" r="8" fill="#d23a30"/></g>
+<rect x="106" y="330" width="300" height="76" fill="#000" opacity="0.8"/>
+<text x="256" y="388" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-weight="bold" font-size="62" letter-spacing="6" fill="#ffffff" stroke="#000" stroke-width="3" paint-order="stroke">FEET</text>
+<circle cx="110" cy="110" r="58" fill="url(#ok)" stroke="#0a1322" stroke-width="8.1"/>
+<path d="M82.2 110.0 L103.0 133.2 L142.5 86.8" fill="none" stroke="#fff" stroke-width="15.1" stroke-linecap="round" stroke-linejoin="round"/><rect x="8" y="8" width="496" height="496" rx="72" fill="none" stroke="url(#frame)" stroke-width="16"/></svg>

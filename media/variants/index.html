@@ -1,0 +1,70 @@
+<title>RecipeScout Logos</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Inter:wght@400;500;600&display=swap">
+<style>
+/* Layout: one row of candidate cards; each shows the logo large, then at the sizes WoW and CurseForge actually use. */
+:root {
+  --bg: #eef1f5; --surface: #ffffff; --fg: #18212e; --muted: #5a6779; --line: #d6dde6;
+  --gold: #9a6f22; --chip: #e6ebf2;
+  --display: "Cinzel", Georgia, serif; --body: "Inter", system-ui, sans-serif;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #0b1220; --surface: #121c2d; --fg: #e8edf4; --muted: #95a3b8; --line: #24324a; --gold: #e2bd6a; --chip: #1b2840; color-scheme: dark } }
+:root[data-theme="dark"] {
+  --bg: #0b1220; --surface: #121c2d; --fg: #e8edf4; --muted: #95a3b8; --line: #24324a; --gold: #e2bd6a; --chip: #1b2840; color-scheme: dark }
+body { background: var(--bg); color: var(--fg); font-family: var(--body); line-height: 1.5; }
+main { max-width: 1180px; margin: 0 auto; padding-block: 32px 48px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+header { display: grid; gap: 6px; margin-bottom: 24px; }
+h1 { font-family: var(--display); font-size: 2rem; margin: 0; color: var(--gold); letter-spacing: 0.02em; text-wrap: balance; }
+header p { margin: 0; color: var(--muted); max-width: 65ch; }
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 16px; }
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 16px; display: grid; gap: 12px; align-content: start; min-width: 0; }
+.big { width: 100%; max-width: 100%; aspect-ratio: 1; display: block; }
+.label { display: flex; align-items: baseline; gap: 8px; }
+.letter { font-family: var(--display); font-weight: 700; color: var(--gold); font-size: 1.25rem; }
+.name { font-weight: 600; }
+.note { margin: 0; color: var(--muted); font-size: 0.875rem; }
+.sizes { display: flex; align-items: end; gap: 12px; background: var(--chip); border-radius: 10px; padding: 10px 12px; }
+.sizes figure { margin: 0; display: grid; justify-items: center; gap: 4px; }
+.sizes figcaption { font-size: 0.6875rem; color: var(--muted); font-variant-numeric: tabular-nums; letter-spacing: 0.04em; }
+.addonrow { display: flex; align-items: center; gap: 8px; background: #0d0d0d; border: 1px solid #3a3a3a; border-radius: 4px; padding: 4px 8px;
+  color: #ffd100; font: 600 12px/1 var(--body); }
+.addonrow img { width: 18px; height: 18px; }
+.addonrow span { color: #ffd100; }
+footer { margin-top: 24px; color: var(--muted); font-size: 0.875rem; }
+</style>
+<main>
+  <header>
+    <h1>RecipeScout logos</h1>
+    <p>Five candidates in the same navy and gold family as Distance to Target. Each one is shown large, at the small sizes CurseForge and the game use, and as it would look in the in-game AddOns list. Tell Claude the letter you like, or mix ideas.</p>
+  </header>
+  <section class="grid" id="grid"></section>
+  <footer>Source SVGs are in <code>media/variants/</code>; the chosen one becomes <code>media/icon.svg</code> with 400 and 512 px PNGs.</footer>
+</main>
+<script>
+const logos = [
+  ["A", "a-scroll-magnifier", "Scroll + magnifier", "The current one. Tells the whole story: recipes, searching, slot, known. Busier at tiny sizes."],
+  ["B", "b-slot-badge", "Slot badge", "Mirrors what the addon draws in game: a pattern icon with a FEET strip. Reads instantly to players."],
+  ["C", "c-lens", "Lens", "Simplest and boldest. Holds up best at 24 px, but doesn't say recipe on its own."],
+  ["D", "d-merchant-grid", "Merchant grid", "A mini merchant window with labels and a highlight. Clear when large, turns to noise when small."],
+  ["E", "e-sewing-pattern", "Sewing pattern", "A tailor's pattern sheet with a dashed boot and needle. Most characterful, leans towards tailoring."],
+];
+const grid = document.getElementById("grid");
+for (const [letter, file, name, note] of logos) {
+  const src = file + ".png";
+  const card = document.createElement("article");
+  card.className = "card";
+  card.innerHTML = `
+    <img class="big" src="${src}" alt="Logo ${letter}: ${name}">
+    <div class="label"><span class="letter">${letter}</span><span class="name">${name}</span></div>
+    <p class="note">${note}</p>
+    <div class="sizes">
+      <figure><img src="${src}" width="64" height="64" alt=""><figcaption>64</figcaption></figure>
+      <figure><img src="${src}" width="32" height="32" alt=""><figcaption>32</figcaption></figure>
+      <figure><img src="${src}" width="20" height="20" alt=""><figcaption>20</figcaption></figure>
+    </div>
+    <div class="addonrow"><img src="${src}" alt=""><span>RecipeScout</span></div>`;
+  grid.appendChild(card);
+}
+</script>
