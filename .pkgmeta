@@ -1,0 +1,16 @@
+package-as: RecipeScout
+
+ignore:
+  - tests
+  - scripts
+  - probe
+  - dist
+  - media
+  - PLAN.md
+  - CONTRIBUTING.md
+
+enable-nolib-creation: no
+
+manual-changelog:
+  filename: CHANGELOG.md
+  markup-type: markdown

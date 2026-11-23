@@ -1,0 +1,8 @@
+## Interface: 11509, 16001
+## Title: RecipeScout Probe
+## Notes: Throwaway test: what the game tells addons about recipes sold by a merchant.
+## Author: jlblancolb
+## Version: 0.0.1-probe
+## SavedVariables: RSProbeDB
+
+RSProbe.lua

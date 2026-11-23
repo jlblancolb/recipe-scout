@@ -1,0 +1,11 @@
+## Interface: 16001
+## Title: RecipeScout
+## Notes: Shows what each recipe on a merchant makes (Feet, Chest, Potion...) and marks the ones you know.
+## Author: jlblancolb
+## Version: 0.1.0
+## IconTexture: 134939
+## SavedVariables: RecipeScoutDB
+
+Recipe.lua
+Panel.lua
+RecipeScout.lua
