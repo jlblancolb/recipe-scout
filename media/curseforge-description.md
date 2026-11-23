@@ -1,6 +1,6 @@
 # RecipeScout
 
-**Which of these 70 patterns are boots?** RecipeScout labels every recipe a merchant sells with what it makes, marks the ones you already know, and lets you filter all pages at once.
+**Which of these 70 patterns are boots?** RecipeScout labels every recipe a merchant sells with what it makes, marks the ones you or your alts already know, and lets you filter all pages at once.
 
 ![RecipeScout next to a recipe merchant: slot badges on every icon and the side panel listing all pages](https://raw.githubusercontent.com/jlblancolb/recipe-scout/main/media/screenshots/panel.png)
 
@@ -25,6 +25,16 @@ Opens next to any merchant that sells recipes:
 ![Leatherworking: 15 boots and sabatons out of 81 patterns over 9 pages](https://raw.githubusercontent.com/jlblancolb/recipe-scout/main/media/screenshots/leatherworking-feet.png)
 
 Close it with the X; the **Recipes** button on the merchant brings it back. `/rs` prints every recipe on the merchant in chat.
+
+## Your alts
+
+Open each crafter's profession window once and RecipeScout remembers what they know, across your whole account.
+
+- **Yellow** recipe = one of your other characters already knows it, with their name next to the price (`Durga`, or `Durga +1` when several do) and in the panel (`Durga · Chest`).
+- The recipe **tooltip** lists who knows it, who can learn it right now, and who has the profession but not enough skill. Works on merchants, in bags and at the auction house.
+- `/rs alts` lists your characters and their recipe counts; `/rs forget <name>` removes one.
+
+![Alts: Durga already knows Shadow Gown and Shadow Circle, so they show in yellow with her name](https://raw.githubusercontent.com/jlblancolb/recipe-scout/main/media/screenshots/alts.png)
 
 ## Plays nicely
 

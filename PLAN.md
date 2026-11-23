@@ -77,5 +77,7 @@ The hard part is finding which item a recipe makes, and its slot, without a big 
 - [x] **Filter buttons fit their text:** "Permanent (2)" and "2H Weapon (3)" were clipped; buttons now size to their text and wrap (2026-11-23)
 - [x] **Enchant targets use gear slot names:** Boots → Feet, Bracer → Wrist, Gloves → Hands, Cloak → Back, 2H Weapon → Two-Hand, Shield; "Weapon" stays (2026-11-23)
 - [x] **Say who knows it:** alt name next to the price on merchant rows ("Durga", "Durga +1"), "Durga · Chest" in panel rows, colour key under Hide known (green: you, yellow: an alt); tested (2026-11-23)
-- [ ] **In-game check of the names** (maintainer)
-- [ ] **Alts screenshot:** yellow check + "Known by" tooltip, once alts work
+- [x] **In-game check of the names:** "Durga" next to the price, "Durga · Chest" in the panel, colour key shown (2026-11-23, maintainer screenshot)
+- [x] **Alts screenshot:** `media/screenshots/alts.png`, plus an "Your alts" section in the description and README (2026-11-23)
+- [x] **Release 0.2.0:** alts, enchant slot names, buttons that fit; tooltip "Known by: Durga" checked in-game; tag `v0.2.0` (2026-11-23)
+- [ ] **CurseForge 0.2.0 file:** confirm it builds from the tag (maintainer)
