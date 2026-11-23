@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.1.1 (2026-11-23)
+
+- First CurseForge release. Same features as 0.1.0, now packaged automatically from GitHub tags.
+
 ## 0.1.0 (2026-11-23)
 
 - First version, for WoW Forever.
