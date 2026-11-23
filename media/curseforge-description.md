@@ -34,7 +34,7 @@ Open each crafter's profession window once and RecipeScout remembers what they k
 - The recipe **tooltip** lists who knows it, who can learn it right now, and who has the profession but not enough skill. Works on merchants, in bags and at the auction house.
 - `/rs alts` lists your characters and their recipe counts; `/rs forget <name>` removes one.
 
-![Alts: Durga already knows Shadow Gown and Shadow Circle, so they show in yellow with her name](https://raw.githubusercontent.com/jlblancolb/recipe-scout/main/media/screenshots/alts.png)
+![Alts: Durga already knows Shadow Gown and Shadow Circle, so they show in yellow with that name](https://raw.githubusercontent.com/jlblancolb/recipe-scout/main/media/screenshots/alts.png)
 
 ## Plays nicely
 
