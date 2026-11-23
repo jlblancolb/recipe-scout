@@ -55,7 +55,8 @@ local function TooltipLines(index)
                     left = Show(line.leftText),
                     right = Show(line.rightText),
                     type = Show(line.type),
-                    color = color and string.format("%.2f,%.2f,%.2f", color.r or 0, color.g or 0, color.b or 0) or "nil",
+                    color = color and string.format("%.2f,%.2f,%.2f", color.r or 0, color.g or 0, color.b or 0)
+                        or "nil",
                     fields = Flat(line),
                 }
             end
