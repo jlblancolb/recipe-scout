@@ -64,4 +64,5 @@ The hard part is finding which item a recipe makes, and its slot, without a big 
 - [x] **Release 0.1.0:** [v0.1.0](https://github.com/jlblancolb/recipe-scout/releases/tag/v0.1.0), `RecipeScout-0.1.0.zip` attached by CI and checked (7 files) (2026-11-23)
 - [ ] **CurseForge project:** create "RecipeScout", game version 1.60.1 (Forever), MIT, description from README, upload `RecipeScout-0.1.0.zip` by hand (maintainer)
 - [ ] **CurseForge auto-upload:** Source = GitHub repo, tagged commits only; GitHub push webhook to `curseforge.com/api/projects/<id>/package` with the same API token as YardsToKm/DistanceToTarget. Then: bump TOC version, tag `vX.Y.Z`, push the tag. Don't re-push `v0.1.0`
+- [x] **Logo and description:** `media/icon.svg` → `icon-512.png`, `icon-400.png` (scroll + magnifier with a boot + green check, same navy/gold style as DistanceToTarget), `media/curseforge-description.md` (2026-11-23)
 - [ ] **Screenshots for CurseForge:** maintainer's 2026-11-23 shots (panel + Feet filter + enchanting badges) are good candidates
