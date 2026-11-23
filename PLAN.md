@@ -47,7 +47,7 @@ The hard part is finding which item a recipe makes, and its slot, without a big 
 
 ## 3. Filter across pages
 
-- [x] **Side panel (`Panel.lua`):** to the right of the merchant, only when it sells recipes; search box, "Hide known" (saved), slot buttons with counts built from what this merchant sells, list of every match across all pages with icon, check, slot, red when not learnable; hover shows the item tooltip; click jumps to its page and makes its icon glow for 2.5 s; close button + "Recipes" tab to reopen (saved); hidden on buyback. Tests cover filters, hide known, jump, buyback (2026-11-23)
+- [x] **Side panel (`Panel.lua`):** to the right of the merchant, only when it sells recipes; search box, "Hide known" (saved), slot buttons with counts built from what this merchant sells, list of every match across all pages with icon, check, slot, red when not learnable; hover shows the item tooltip; click jumps to its page and makes its icon glow for 2.5 s; close button + "Filters" button to reopen (was "Recipes", renamed 2026-11-23 as misleading) (saved); hidden on buyback. Tests cover filters, hide known, jump, buyback (2026-11-23)
 - [ ] **Buy from the panel:** maybe later; jumping to the page is enough for now
 - [x] **In-game check on Forever:** 67 recipes, slot buttons with counts, Feet filter (12), Hide known (64 of 67), red for not-yet-learnable, row tooltip includes Mastercraft/Polestar lines, buyback hides the panel (2026-11-23, maintainer screenshots)
 - [ ] **Polish:** the scroll bar looks small and plain next to the list; try Mainline's `ScrollFrameTemplate`/`MinimalScrollBar`
@@ -62,7 +62,9 @@ The hard part is finding which item a recipe makes, and its slot, without a big 
 - [x] **In-game check of appearances:** transmog icon (`Interface\\CURSOR\\Transmogrify`) renders; only Shadow Gloves among Jim'bek's Hands gets it; Hide owned looks 11 → 10; label overflowed the panel edge, shortened to "Hide [icon] owned" with hover tooltips on both checkboxes; shortened label checked in-game (2026-11-23, maintainer screenshots)
 - [x] **Release 0.3.0:** appearances, screenshot `appearances.png` and an Appearances section in the description; tag `v0.3.0` (2026-11-23)
 - [x] **Settings page and addon compartment:** `Options.lua` from DistanceToTarget's pattern (native vertical page on Forever, canvas fallback). Options, all on by default: enable, slot badges, known (green), alts (yellow + name), owned looks, alt tooltip lines, open panel at recipe merchants (= `panelShown`). Compartment: left-click settings, right-click on/off. `/rs settings`. Needs a full game restart (new file); main file copes without `Options.lua`; settings tests in `tests/recipe.lua` (defaults, each option, X button ↔ setting, compartment, `/rs settings`); CI green (2026-11-23)
-- [ ] **In-game check of settings** after a full restart (maintainer)
+- [x] **In-game check of settings:** page renders with 7 options; badges toggle live; X unticks the panel setting; compartment right-click hides everything (2026-11-23, maintainer). Fixed from it: "Open the panel at recipe merchants" cut off → "Show the filter panel"; reopen button "Recipes" misleading → "Filters" with a tooltip
+- [x] **Release 0.4.0:** settings page, compartment, Filters button; Settings section in README and description; tag `v0.4.0` (2026-11-23)
+- [ ] **Settings screenshot** for CurseForge (maintainer), with the shortened label
 
 ## 5. Release
 

@@ -278,7 +278,7 @@ local function Build()
     end)
 end
 
--- The close button and the Recipes button change the same setting as the settings page.
+-- The close button and the Filters button change the same setting as the settings page.
 function Panel.SetShownSetting(shown)
     if ns.SetSetting then
         ns.SetSetting("panelShown", shown)
@@ -292,7 +292,15 @@ end
 local function BuildToggle()
     toggle = CreateFrame("Button", nil, MerchantFrame, "UIPanelButtonTemplate")
     toggle:SetSize(70, 20)
-    toggle:SetText("Recipes")
+    toggle:SetText("Filters")
+    toggle:SetScript("OnEnter", function(self)
+        GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+        GameTooltip:SetText("RecipeScout")
+        GameTooltip:AddLine("Open the filter panel: every recipe on this merchant, by slot, from all pages.",
+            1, 1, 1, true)
+        GameTooltip:Show()
+    end)
+    toggle:SetScript("OnLeave", function() GameTooltip:Hide() end)
     toggle:SetPoint("TOPLEFT", MerchantFrame, "TOPRIGHT", 2, -4)
     toggle:SetScript("OnClick", function() Panel.SetShownSetting(true) end)
     local close = CreateFrame("Button", nil, panel, "UIPanelCloseButton")

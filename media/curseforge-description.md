@@ -24,7 +24,7 @@ Opens next to any merchant that sells recipes:
 
 ![Leatherworking: 15 boots and sabatons out of 81 patterns over 9 pages](https://raw.githubusercontent.com/jlblancolb/recipe-scout/main/media/screenshots/leatherworking-feet.png)
 
-Close it with the X; the **Recipes** button on the merchant brings it back. `/rs` prints every recipe on the merchant in chat.
+Close it with the X; the **Filters** button on the merchant brings it back. `/rs` prints every recipe on the merchant in chat.
 
 ## Your alts
 
@@ -42,6 +42,10 @@ Open each crafter's profession window once and RecipeScout remembers what they k
 - Tick **Hide owned** in the panel to keep only recipes that give you a new look.
 
 ![Appearances: Shadow Gloves is the only Hands pattern whose look is already collected](https://raw.githubusercontent.com/jlblancolb/recipe-scout/main/media/screenshots/appearances.png)
+
+## Settings
+
+Options → AddOns → RecipeScout, the minimap addon menu (left-click: settings, right-click: on/off), or `/rs settings`. Switch off any part you don't want: slot badges, known marks, alt marks, owned looks, alt lines in tooltips, the filter panel.
 
 ## Plays nicely
 

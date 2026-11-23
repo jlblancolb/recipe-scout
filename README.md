@@ -11,12 +11,16 @@ Shows what every recipe on a merchant makes (Feet, Chest, Hands, Off Hand, Reage
   - slot buttons with counts (`Feet (12)`, `Hands (11)`…), built from what this merchant sells
   - a name search and a **Hide known** option (remembered)
   - every matching recipe from all pages; hover for the full tooltip, click to jump to its page (its icon glows briefly)
-  - close it with the X; the **Recipes** button on the merchant's right edge brings it back
+  - close it with the X; the **Filters** button on the merchant's right edge brings it back
 - **Your alts:** open each crafter's profession window once and RecipeScout remembers their recipes account-wide. Recipes another character knows are yellow, with that character's name next to the price and in the panel (`Durga · Chest`). Recipe tooltips (merchant, bags, auction house) list who knows it, who can learn it now, and who has the profession but too little skill.
 - **Appearances:** gear recipes whose appearance you already collected get the transmog icon on the merchant and in the panel; **Hide owned** in the panel leaves only new looks. The game only marks missing appearances ("You haven't collected this appearance"), so gear without that line counts as collected.
-- `/rs` lists every recipe on the open merchant with its slot, who knows it and whether you own the look; `/rs alts` lists your characters and recipe counts; `/rs forget <name>` removes one; `/rs debug` shows what the last profession scan found.
+- `/rs` lists every recipe on the open merchant with its slot, who knows it and whether you own the look; `/rs settings` opens the settings; `/rs alts` lists your characters and recipe counts; `/rs forget <name>` removes one; `/rs debug` shows what the last profession scan found.
 
 Works with every profession and every recipe merchant, not only Merchant's Favor. It reads the game's own item data, so there's no recipe database to go out of date and labels use your game language.
+
+## Settings
+
+Options → AddOns → RecipeScout, the minimap addon menu (left-click: settings, right-click: on/off), or `/rs settings`. Switch off any part you don't want: slot badges, known marks, alt marks, owned looks, alt lines in tooltips, the filter panel.
 
 ## Works with
 

@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.4.0 (2026-11-23)
+
+- Settings page (Options → AddOns → RecipeScout, or `/rs settings`): turn RecipeScout on or off, and each part separately: slot badges, known marks, alt marks, owned looks, alt lines in tooltips, the filter panel.
+- Minimap addon menu entry: left-click opens the settings, right-click turns RecipeScout on or off.
+- The button that reopens the panel is now called "Filters" (was "Recipes"), with a tooltip.
+
 ## 0.3.0 (2026-11-23)
 
 - Appearances: gear recipes whose look you already collected get the transmog icon, on the merchant and in the panel.

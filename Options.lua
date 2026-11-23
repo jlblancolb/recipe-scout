@@ -17,7 +17,7 @@ local OPTIONS = {
     { "tooltip", "Alt lines in recipe tooltips", "Add \"Known by\", \"Can learn\" and \"Skill too low\" to recipe "
         .. "tooltips at merchants, in bags and at the auction house." },
     { "panelShown", "Show the filter panel", "Show the side panel with filters next to any merchant "
-        .. "that sells recipes. The Recipes button on the merchant opens it too." },
+        .. "that sells recipes. The Filters button on the merchant opens it too." },
 }
 
 local category
