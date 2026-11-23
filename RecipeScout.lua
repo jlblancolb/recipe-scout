@@ -157,6 +157,17 @@ SlashCmdList.RECIPESCOUT = function(message)
         if #lines == 0 then Say("no characters recorded yet: open a profession window on each crafter.") end
         for _, line in ipairs(lines) do Say(line) end
         return
+    elseif command == "debug" then
+        local scan = RecipeScoutDB and RecipeScoutDB.lastScan
+        if not scan then
+            Say("no profession scan yet: open a profession window first.")
+            return
+        end
+        local keys = {}
+        for key in pairs(scan) do keys[#keys + 1] = key end
+        table.sort(keys)
+        for _, key in ipairs(keys) do Say(key .. ": " .. tostring(scan[key])) end
+        return
     elseif command == "forget" then
         local key = ns.Alts.Forget(rest)
         Say(key and ("forgot " .. key) or "no character called '" .. (rest or "") .. "'. /rs alts lists them.")

@@ -13,13 +13,14 @@ files["Recipe.lua"] = { read_globals = wow }
 files["Alts.lua"] = {
     globals = { "RecipeScoutDB" },
     read_globals = { "C_TradeSkillUI", "Enum", "GetNumSkillLines", "GetNumTradeSkills", "GetProfessionInfo",
-        "GetProfessions", "GetRealmName", "GetSkillLineInfo", "GetTradeSkillInfo", "GetTradeSkillItemLink",
+        "GetProfessions", "GetRealmName", "GetNormalizedRealmName", "GetNumCrafts", "GetCraftDisplaySkillLine",
+        "GetCraftInfo", "GetCraftItemLink", "date", "GetSkillLineInfo", "GetTradeSkillInfo", "GetTradeSkillItemLink",
         "GetTradeSkillLine", "GetTradeSkillRecipeLink", "ItemRefTooltip", "RAID_CLASS_COLORS", "TooltipDataProcessor",
         "UnitClass", "UnitName", "time", "unpack", unpack(wow) },
 }
 files["Panel.lua"] = { globals = { "RecipeScoutDB", "MerchantFrame" }, read_globals = wow }
 files["RecipeScout.lua"] = {
-    globals = { "SLASH_RECIPESCOUT1", "SLASH_RECIPESCOUT2", "SlashCmdList" },
+    globals = { "SLASH_RECIPESCOUT1", "SLASH_RECIPESCOUT2", "SlashCmdList", "RecipeScoutDB" },
     read_globals = { "MerchantFrame", unpack(wow) },
 }
 files["probe"] = {

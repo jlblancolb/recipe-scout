@@ -39,9 +39,19 @@ end
 local meKey
 local function Me()
     if meKey then return meKey end
-    local name, realm = Plain(UnitName("player")), Plain(GetRealmName and GetRealmName())
+    local name = Plain(UnitName("player"))
     if not name then return nil end
-    meKey = name .. "-" .. (realm or "")
+    local realm = Plain(Call(GetRealmName))
+    if type(realm) ~= "string" or realm == "" then realm = Plain(Call(GetNormalizedRealmName)) end
+    if type(realm) ~= "string" or realm == "" then
+        return name .. "-" -- realm not known yet (seen on Forever at login); don't cache
+    end
+    meKey = name .. "-" .. realm
+    -- Move a record saved before the realm was known.
+    local chars = DB().chars
+    if chars[name .. "-"] and not chars[meKey] then
+        chars[meKey], chars[name .. "-"] = chars[name .. "-"], nil
+    end
     return meKey
 end
 Alts.Me = Me
@@ -160,10 +170,81 @@ local function ScanClassic(char)
     return true
 end
 
-function Alts.ScanProfession()
+-- Classic Enchanting uses the separate Craft window and API.
+local function ScanCraft(char)
+    if not (GetNumCrafts and GetCraftDisplaySkillLine) then return false end
+    local profName, rank = Call(GetCraftDisplaySkillLine)
+    profName = Plain(profName)
+    local count = Call(GetNumCrafts) or 0
+    if type(profName) ~= "string" or profName == "" or count == 0 then return false end
+    local prof = NewProf(char, profName, Plain(rank))
+    for index = 1, count do
+        local name, _, kind = Call(GetCraftInfo, index)
+        if kind ~= "header" then
+            name = Recipe.ShortName(name)
+            if name then prof.names[name] = true end
+            local link = Plain(Call(GetCraftItemLink, index))
+            local spell = type(link) == "string" and tonumber(link:match("enchant:(%d+)"))
+            if spell then prof.spells[spell] = true end
+            local item = ItemFromLink(link)
+            if item then prof.items[item] = true end
+        end
+    end
+    return true
+end
+
+-- What each profession API answered on the last scan, saved for troubleshooting (/rs debug).
+local function Describe(value)
+    value = Plain(value)
+    if type(value) ~= "table" then return tostring(value) end
+    local parts = {}
+    for key, field in pairs(value) do
+        if type(field) ~= "table" and type(field) ~= "function" then
+            parts[#parts + 1] = tostring(key) .. "=" .. tostring(Plain(field))
+        end
+    end
+    table.sort(parts)
+    return table.concat(parts, " ")
+end
+
+local function Diagnose(event)
+    local ui = C_TradeSkillUI or {}
+    local info = { event = event, at = date and date("%Y-%m-%d %H:%M:%S") }
+    info.apis = string.format(
+        "C_TradeSkillUI=%s GetAllRecipeIDs=%s GetTradeSkillLine=%s GetNumTradeSkills=%s GetNumCrafts=%s",
+        tostring(C_TradeSkillUI ~= nil), tostring(ui.GetAllRecipeIDs ~= nil), tostring(GetTradeSkillLine ~= nil),
+        tostring(GetNumTradeSkills ~= nil), tostring(GetNumCrafts ~= nil))
+    local ids = Call(ui.GetAllRecipeIDs)
+    info.modernIDs = type(ids) == "table" and #ids or tostring(ids)
+    info.modernFirst = type(ids) == "table" and ids[1] and Describe(Call(ui.GetRecipeInfo, ids[1])) or nil
+    info.modernBase = Describe(Call(ui.GetBaseProfessionInfo))
+    info.modernChild = Describe(Call(ui.GetChildProfessionInfo))
+    info.modernFlags = string.format("linked=%s guild=%s npc=%s", tostring(Call(ui.IsTradeSkillLinked)),
+        tostring(Call(ui.IsTradeSkillGuild)), tostring(Call(ui.IsNPCCrafting)))
+    local lineName, lineRank = Call(GetTradeSkillLine)
+    info.classicLine = tostring(Plain(lineName)) .. " " .. tostring(Plain(lineRank))
+    info.classicCount = tostring(Call(GetNumTradeSkills))
+    info.classicFirst = table.concat({ tostring((Call(GetTradeSkillInfo, 1))) }, " ")
+    info.craftLine = tostring(Call(GetCraftDisplaySkillLine))
+    info.craftCount = tostring(Call(GetNumCrafts))
+    local function Shown(name) return tostring(_G[name] ~= nil and _G[name]:IsShown()) end
+    info.frames = string.format("TradeSkillFrame=%s ProfessionsFrame=%s CraftFrame=%s",
+        Shown("TradeSkillFrame"), Shown("ProfessionsFrame"), Shown("CraftFrame"))
+    return info
+end
+
+function Alts.ScanProfession(event)
     local char = MyChar()
     if not char then return end
-    if not ScanModern(char) then ScanClassic(char) end
+    local ok, result = pcall(function()
+        if ScanModern(char) then return "modern" end
+        if ScanClassic(char) then return "classic" end
+        if ScanCraft(char) then return "craft" end
+        return "nothing found"
+    end)
+    local debug = Diagnose(event)
+    debug.result = ok and result or ("error: " .. tostring(result))
+    DB().lastScan = debug
 end
 
 -- A freshly learned recipe counts right away, before the profession window is reopened.
@@ -287,18 +368,18 @@ end
 
 -- Events: skills at login and when they change, recipes when a profession window shows or updates.
 local pending = false
-local function ScanSoon()
+local function ScanSoon(event)
     if pending then return end
     pending = true
     C_Timer.After(0.5, function()
         pending = false
-        Alts.ScanProfession()
+        Alts.ScanProfession(event)
     end)
 end
 
 local events = CreateFrame("Frame")
 for _, event in ipairs({ "PLAYER_LOGIN", "SKILL_LINES_CHANGED", "TRADE_SKILL_SHOW", "TRADE_SKILL_LIST_UPDATE",
-    "TRADE_SKILL_DATA_SOURCE_CHANGED", "NEW_RECIPE_LEARNED" }) do
+    "TRADE_SKILL_DATA_SOURCE_CHANGED", "TRADE_SKILL_UPDATE", "CRAFT_SHOW", "CRAFT_UPDATE", "NEW_RECIPE_LEARNED" }) do
     pcall(events.RegisterEvent, events, event)
 end
 events:SetScript("OnEvent", function(_, event, arg1)
@@ -306,9 +387,9 @@ events:SetScript("OnEvent", function(_, event, arg1)
         Alts.RecordSkills()
     elseif event == "NEW_RECIPE_LEARNED" then
         Alts.Learned(arg1)
-        ScanSoon()
+        ScanSoon(event)
     else
-        ScanSoon()
+        ScanSoon(event)
     end
 end)
 
