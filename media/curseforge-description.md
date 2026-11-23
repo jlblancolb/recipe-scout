@@ -6,9 +6,11 @@
 
 ## What you see
 
-- **A slot on every recipe icon:** `Feet`, `Chest`, `Waist`, `Two-Hand`, `Off Hand`, `Relic`… or the item type for things you don't wear (`Reagent Bag`). Enchanting formulas show what they enchant (`Weapon`, `Bracer`).
+- **A slot on every recipe icon:** `Feet`, `Chest`, `Waist`, `Two-Hand`, `Off Hand`, `Relic`… or the item type for things you don't wear (`Reagent Bag`). Enchanting formulas show what they enchant, using the same slot names (`Weapon`, `Wrist`, `Feet`), so the Feet filter finds boot enchants too.
 - **Known recipes:** green check on the icon and a green row.
 - **Can't learn yet** (skill too low, reputation): stays red, as the game already shows.
+
+![Enchanting formulas: Two-Hand, Off Hand, Relic and Weapon at a glance](https://raw.githubusercontent.com/jlblancolb/recipe-scout/main/media/screenshots/enchanting.png)
 
 ## The side panel
 
@@ -19,6 +21,8 @@ Opens next to any merchant that sells recipes:
 - every match from **all pages** in one list; hover for the tooltip, click to jump to its page
 
 ![Feet filter: the 12 boots and sandals from all 7 pages in one list; red ones need more skill](https://raw.githubusercontent.com/jlblancolb/recipe-scout/main/media/screenshots/feet-filter.png)
+
+![Leatherworking: 15 boots and sabatons out of 81 patterns over 9 pages](https://raw.githubusercontent.com/jlblancolb/recipe-scout/main/media/screenshots/leatherworking-feet.png)
 
 Close it with the X; the **Recipes** button on the merchant brings it back. `/rs` prints every recipe on the merchant in chat.
 

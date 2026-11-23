@@ -109,12 +109,12 @@ local function LayoutChips()
     table.insert(order, 1, false)
     if filter.slot and not counts[filter.slot] then filter.slot = nil end
 
-    local perRow = math.floor((WIDTH - 16) / CHIP_W)
+    -- Flow layout: each button as wide as its text, wrapping onto new rows.
+    local x, y, maxX = 8, 0, WIDTH - 8
     for i, label in ipairs(order) do
         local chip = chips[i]
         if not chip then
             chip = CreateFrame("Button", nil, panel, "UIPanelButtonTemplate")
-            chip:SetSize(CHIP_W, CHIP_H)
             chip:SetScript("OnClick", function(self)
                 filter.slot = self.label or nil
                 Panel.Refresh()
@@ -124,14 +124,24 @@ local function LayoutChips()
         chip.label = label
         chip:SetText(label and string.format("%s (%d)", label, counts[label]) or string.format("All (%d)", #entries))
         local fontString = chip:GetFontString()
-        if fontString then fontString:SetFont(STANDARD_TEXT_FONT, 9) end
+        local width = CHIP_W
+        if fontString then
+            fontString:SetFont(STANDARD_TEXT_FONT, 9)
+            local textWidth = fontString:GetStringWidth()
+            if type(textWidth) == "number" and textWidth > 0 then width = math.max(44, math.ceil(textWidth) + 16) end
+        end
+        if x + width > maxX and x > 8 then
+            x, y = 8, y + CHIP_H
+        end
+        chip:SetSize(width, CHIP_H)
         chip:ClearAllPoints()
-        chip:SetPoint("TOPLEFT", 8 + ((i - 1) % perRow) * CHIP_W, -84 - math.floor((i - 1) / perRow) * CHIP_H)
+        chip:SetPoint("TOPLEFT", x, -84 - y)
+        x = x + width
         if (filter.slot or false) == label then chip:LockHighlight() else chip:UnlockHighlight() end
         chip:Show()
     end
     for i = #order + 1, #chips do chips[i]:Hide() end
-    return 84 + math.ceil(#order / perRow) * CHIP_H + 4
+    return 84 + y + CHIP_H + 4
 end
 
 function Panel.Refresh()

@@ -98,6 +98,12 @@ Recipe.SHORT = {
     INVTYPE_ROBE = "INVTYPE_CHEST",
 }
 
+-- Enchanting formula targets mapped to the same slot names gear uses, so "Feet" also finds boot enchants.
+Recipe.ENCHANT_SLOTS = {
+    boots = "INVTYPE_FEET", bracer = "INVTYPE_WRIST", gloves = "INVTYPE_HAND", cloak = "INVTYPE_CLOAK",
+    chest = "INVTYPE_CHEST", shield = "INVTYPE_SHIELD", ["2h weapon"] = "INVTYPE_2HWEAPON",
+}
+
 -- Short label for what the recipe makes: the localized slot ("Feet", "Back"),
 -- or the item subtype ("Potion", "Bag") for things you don't wear.
 function Recipe.Label(craftedID, recipeName)
@@ -110,7 +116,9 @@ function Recipe.Label(craftedID, recipeName)
         end
         return Text(subType)
     end
-    return Recipe.EnchantTarget(recipeName)
+    local target = Recipe.EnchantTarget(recipeName)
+    local slot = target and Recipe.ENCHANT_SLOTS[target:lower()]
+    return slot and Text(_G[slot]) or target
 end
 
 -- Everything about merchant item `index`, or nil if it isn't a recipe.

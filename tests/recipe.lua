@@ -183,6 +183,10 @@ items[700001] = { "Armor", "Cloth", "INVTYPE_ROBE", 4 }
 items[700002] = { "Armor", "Miscellaneous", "INVTYPE_HOLDABLE", 4 }
 INVTYPE_CHEST, INVTYPE_ROBE, SECONDARYHANDSLOT, INVTYPE_HOLDABLE = "Chest", "Chest", "Off Hand", "Held In Off-hand"
 check(R.Label(700001) == "Chest" and R.Label(700002) == "Off Hand", "short slot names")
+INVTYPE_WRIST, INVTYPE_2HWEAPON = "Wrist", "Two-Hand"
+check(R.Label(nil, "Formula: Enchant Boots - Minor Agility") == "Feet", "boot enchants filed under Feet")
+check(R.Label(nil, "Formula: Enchant 2H Weapon - Impact") == "Two-Hand", "2H weapon enchants filed under Two-Hand")
+check(R.Label(nil, "Formula: Enchant Weapon - Insight") == "Weapon", "weapon enchants stay Weapon")
 
 -- Buyback tab hides the panel without errors.
 MerchantFrame.selectedTab = 2

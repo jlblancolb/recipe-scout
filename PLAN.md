@@ -56,7 +56,7 @@ The hard part is finding which item a recipe makes, and its slot, without a big 
 
 - [x] **Alt recipes:** `Alts.lua` records each character's learned recipes (crafted item ID, recipe spell ID, recipe name) per profession when a profession window opens, plus profession skill at login; yellow check/text on the merchant and panel when an alt knows it; recipe tooltip lines "Known by", "Can learn", "Skill too low" (bags and AH too); `/rs alts`, `/rs forget <name>`; matches by crafted item, recipe spell (the tooltip's `spellID`) or name; "can learn" only after that alt's profession window was scanned, otherwise "not checked yet"; `tests/alts.lua` (3 characters, linked profession ignored, other realm, secrets), CI green (2026-11-23)
   Unverified on Forever: whether `C_TradeSkillUI.GetAllRecipeIDs`/`GetRecipeInfo` work there (classic `GetTradeSkillInfo` is the fallback), and whether the recipe tooltip's `spellID` equals the profession recipe ID (item and name matching cover it if not)
-- [ ] **In-game check of alts:** open each crafter's profession window once, then a recipe merchant; check `/rs alts` counts and the tooltip lines (maintainer)
+- [~] **In-game check of alts:** first try failed (2026-11-23): Jhon Dicc saw no yellow at Jim'bek. Saved file had Durga's skills (Tailoring 111, Enchanting 105 via `GetProfessions`) but no recipes (`profs = {}`), and realm saved as "" (`Durga-`). Added: every scan saves what each profession API answered to `RecipeScoutDB.lastScan` (`/rs debug`), classic Craft API path (Enchanting), `GetNormalizedRealmName` fallback and moving a `Name-` record once the realm is known. Next: Durga opens Tailoring and Enchanting, `/reload`, agent reads the saved file
 - [ ] **Appearance collected:** use the transmog API if the probe shows it answers
 - [ ] **Settings panel and addon compartment:** same pattern as DistanceToTarget
 
@@ -72,4 +72,7 @@ The hard part is finding which item a recipe makes, and its slot, without a big 
 - [ ] **Project approval:** wait for CurseForge moderators; files sync once approved
 - [x] **Logo and description:** `media/icon.svg` → `icon-512.png`, `icon-400.png`: option B "slot badge" (pattern icon with a FEET strip + green check, navy/gold like DistanceToTarget), picked from 5 candidates in `media/variants/` (2026-11-23), `media/curseforge-description.md` (2026-11-23)
 - [x] **Screenshots, first set:** `media/screenshots/panel.png` (merchant + panel, Hide known) and `feet-filter.png` (Feet filter), cropped from the maintainer's 2026-11-23 shots; both in the CurseForge description via raw GitHub URLs (2026-11-23)
-- [ ] **Screenshots, second set (maintainer):** enchanting vendor (now `Off Hand`), Feet filter without a tooltip covering the panel, an alt-known recipe (yellow check) with its "Known by" tooltip; agent crops them into `media/screenshots/`
+- [x] **Screenshots, second set:** `enchanting.png` (Beneris, Off Hand fix), `feet-filter.png` replaced with a clean Jim'bek shot, `leatherworking-feet.png` (Pawani, 15 of 81); all in the description (2026-11-23)
+- [x] **Filter buttons fit their text:** "Permanent (2)" and "2H Weapon (3)" were clipped; buttons now size to their text and wrap (2026-11-23)
+- [x] **Enchant targets use gear slot names:** Boots → Feet, Bracer → Wrist, Gloves → Hands, Cloak → Back, 2H Weapon → Two-Hand, Shield; "Weapon" stays (2026-11-23)
+- [ ] **Alts screenshot:** yellow check + "Known by" tooltip, once alts work
