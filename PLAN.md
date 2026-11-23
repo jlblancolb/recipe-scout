@@ -71,4 +71,5 @@ The hard part is finding which item a recipe makes, and its slot, without a big 
 - [ ] **Archive the CurseForge v0.1.0 file:** the first tag push also packaged the older `v0.1.0` tag, so both are listed (same code). Archive v0.1.0, keep v0.1.1 (maintainer)
 - [ ] **Project approval:** wait for CurseForge moderators; files sync once approved
 - [x] **Logo and description:** `media/icon.svg` → `icon-512.png`, `icon-400.png`: option B "slot badge" (pattern icon with a FEET strip + green check, navy/gold like DistanceToTarget), picked from 5 candidates in `media/variants/` (2026-11-23), `media/curseforge-description.md` (2026-11-23)
-- [ ] **Screenshots for CurseForge:** maintainer's 2026-11-23 shots (panel + Feet filter + enchanting badges) are good candidates
+- [x] **Screenshots, first set:** `media/screenshots/panel.png` (merchant + panel, Hide known) and `feet-filter.png` (Feet filter), cropped from the maintainer's 2026-11-23 shots; both in the CurseForge description via raw GitHub URLs (2026-11-23)
+- [ ] **Screenshots, second set (maintainer):** enchanting vendor (now `Off Hand`), Feet filter without a tooltip covering the panel, an alt-known recipe (yellow check) with its "Known by" tooltip; agent crops them into `media/screenshots/`
