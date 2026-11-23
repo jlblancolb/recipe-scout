@@ -8,6 +8,8 @@ local Recipe = ns.Recipe
 local KNOWN = { 0.25, 1.0, 0.25 }
 local ALT = { 1.0, 0.82, 0.0 }
 local CHECK_TEXTURE = "Interface\\RaidFrame\\ReadyCheck-Ready"
+local LOOK_TEXTURE = "Interface\\CURSOR\\Transmogrify"
+ns.LOOK_TEXTURE = LOOK_TEXTURE
 
 local overlays = {}
 
@@ -60,6 +62,12 @@ local function Overlay(slot)
     glow:SetBlendMode("ADD")
     glow:SetAllPoints(overlay)
 
+    -- Appearance already collected: the transmog icon in the top-right corner.
+    local look = overlay:CreateTexture(nil, "OVERLAY")
+    look:SetTexture(LOOK_TEXTURE)
+    look:SetSize(16, 16)
+    look:SetPoint("TOPRIGHT", 4, 4)
+
     -- Who else knows it: a name next to the price, e.g. "Durga" or "Durga +1".
     local whoFrame = CreateFrame("Frame", nil, row)
     whoFrame:SetAllPoints(row)
@@ -70,6 +78,7 @@ local function Overlay(slot)
 
     overlays[slot] = {
         frame = overlay, strip = strip, label = label, check = check, row = row, tint = tint, glow = glow, who = who,
+        look = look,
     }
     return overlays[slot]
 end
@@ -102,7 +111,7 @@ local function Update()
         local overlay = Overlay(slot)
         if overlay then
             local altKnown = info and not info.known and info.alts and #info.alts.known > 0
-            if info and (info.label or info.known or altKnown) then
+            if info and (info.label or info.known or altKnown or info.look == "owned") then
                 overlay.label:SetText(info.label or "")
                 overlay.strip:SetShown(info.label ~= nil)
                 local color = info.known and KNOWN or altKnown and ALT or nil
@@ -119,6 +128,7 @@ local function Update()
                     overlay.check:SetVertexColor(1, 1, 1)
                 end
                 overlay.check:SetShown(info.known or altKnown)
+                overlay.look:SetShown(info.look == "owned")
                 overlay.tint:SetShown(info.known)
                 overlay.who:SetText(altKnown and ns.AltNames(info.alts.known) or "")
                 overlay.frame:Show()
@@ -208,7 +218,8 @@ SlashCmdList.RECIPESCOUT = function(message)
                 alts = " |cffffd100(alt: " .. table.concat(info.alts.known, ", ") .. ")|r"
             end
             local known = info.known and " |cff40ff40(known)|r" or ""
-            Say(string.format("%d: %s%s%s", index, info.label or "?", known, alts))
+            local look = info.look == "owned" and " |cffb48cff(look owned)|r" or ""
+            Say(string.format("%d: %s%s%s%s", index, info.label or "?", known, alts, look))
         end
     end
     Say(shown .. " recipes on this merchant.")

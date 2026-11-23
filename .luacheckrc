@@ -6,7 +6,8 @@ local wow = {
     "C_Item", "C_MerchantFrame", "C_Timer", "C_TooltipInfo", "CreateFrame", "DEFAULT_CHAT_FRAME", "GameTooltip",
     "GetItemInfoInstant", "GetMerchantItemID", "GetMerchantNumItems", "hooksecurefunc", "issecretvalue",
     "ITEM_SPELL_KNOWN", "ITEM_MIN_SKILL", "MERCHANT_ITEMS_PER_PAGE", "MerchantFrame_Update", "STANDARD_TEXT_FONT",
-    "wipe",
+    "wipe", "TRANSMOGRIFY_TOOLTIP_APPEARANCE_UNKNOWN", "TRANSMOGRIFY_TOOLTIP_APPEARANCE_KNOWN",
+    "TRANSMOGRIFY_TOOLTIP_ITEM_UNKNOWN_APPEARANCE_KNOWN",
 }
 
 files["Recipe.lua"] = { read_globals = wow }

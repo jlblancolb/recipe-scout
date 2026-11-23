@@ -42,6 +42,7 @@ local function Collect()
                 index = index, label = info.label or "?", known = info.known, usable = usable ~= false,
                 altKnown = not info.known and info.alts ~= nil and #info.alts.known > 0,
                 alts = info.alts and info.alts.known,
+                lookOwned = info.look == "owned",
                 name = name, short = name:match("^[^:]+:%s*(.+)$") or name, icon = icon,
             }
         end
@@ -51,6 +52,7 @@ end
 local function Matches(entry)
     if filter.slot and entry.label ~= filter.slot then return false end
     if DB().hideKnown and entry.known then return false end
+    if DB().hideLooks and entry.lookOwned then return false end
     if filter.search ~= "" and not entry.name:lower():find(filter.search, 1, true) then return false end
     return true
 end
@@ -81,8 +83,12 @@ local function Row(i)
     row.check:SetTexture("Interface\\RaidFrame\\ReadyCheck-Ready")
     row.check:SetSize(12, 12)
     row.check:SetPoint("BOTTOMRIGHT", row.icon, "BOTTOMRIGHT", 3, -2)
+    row.look = row:CreateTexture(nil, "OVERLAY")
+    row.look:SetTexture(ns.LOOK_TEXTURE)
+    row.look:SetSize(13, 13)
+    row.look:SetPoint("RIGHT", -2, 0)
     row.slot = row:CreateFontString(nil, "OVERLAY", "GameFontDisableSmall")
-    row.slot:SetPoint("RIGHT", -2, 0)
+    row.slot:SetPoint("RIGHT", -18, 0)
     row.name = row:CreateFontString(nil, "OVERLAY", "GameFontHighlightSmall")
     row.name:SetPoint("LEFT", row.icon, "RIGHT", 4, 0)
     row.name:SetPoint("RIGHT", row.slot, "LEFT", -4, 0)
@@ -172,6 +178,7 @@ function Panel.Refresh()
             else
                 row.name:SetTextColor(1, 1, 1)
             end
+            row.look:SetShown(entry.lookOwned)
             if entry.altKnown then
                 row.slot:SetText(ns.AltNames(entry.alts) .. " |cff808080·|r " .. entry.label)
             else
@@ -225,6 +232,18 @@ local function Build()
     local hideText = hideKnown:CreateFontString(nil, "OVERLAY", "GameFontHighlightSmall")
     hideText:SetPoint("LEFT", hideKnown, "RIGHT", 2, 0)
     hideText:SetText("Hide known")
+    local hideLooks = CreateFrame("CheckButton", nil, panel, "UICheckButtonTemplate")
+    hideLooks:SetSize(22, 22)
+    hideLooks:SetPoint("TOPLEFT", 112, -56)
+    local looksText = hideLooks:CreateFontString(nil, "OVERLAY", "GameFontHighlightSmall")
+    looksText:SetPoint("LEFT", hideLooks, "RIGHT", 2, 0)
+    looksText:SetText("Hide |T" .. ns.LOOK_TEXTURE .. ":13|t owned looks")
+    hideLooks:SetScript("OnClick", function(self)
+        DB().hideLooks = self:GetChecked() and true or false
+        Panel.Refresh()
+    end)
+    panel.hideLooks = hideLooks
+
     local key = panel:CreateFontString(nil, "OVERLAY", "GameFontDisableSmall")
     key:SetPoint("TOPLEFT", 12, -80)
     key:SetText("|cff40ff40Green|r: you know it  |cffffd100Yellow|r: an alt does")
@@ -240,6 +259,7 @@ local function Build()
 
     panel:SetScript("OnShow", function()
         hideKnown:SetChecked(DB().hideKnown)
+        panel.hideLooks:SetChecked(DB().hideLooks)
         Panel.Refresh()
     end)
 end

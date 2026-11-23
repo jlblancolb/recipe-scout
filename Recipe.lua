@@ -60,6 +60,10 @@ function Recipe.Parse(data)
     local result = { known = false }
     if type(data) ~= "table" or type(data.lines) ~= "table" then return result end
     local knownText = Text(ITEM_SPELL_KNOWN) or "Already known"
+    local lookMissing = Text(TRANSMOGRIFY_TOOLTIP_APPEARANCE_UNKNOWN) or "You haven't collected this appearance"
+    local lookOwned = Text(TRANSMOGRIFY_TOOLTIP_APPEARANCE_KNOWN) or "You've collected this appearance"
+    local lookOwnedOther = Text(TRANSMOGRIFY_TOOLTIP_ITEM_UNKNOWN_APPEARANCE_KNOWN)
+        or "You've collected this appearance, but not from this item"
     for index, line in ipairs(data.lines) do
         local id = line.tooltipID
         if not result.crafted and type(id) == "number" and not isSecret(id)
@@ -69,8 +73,13 @@ function Recipe.Parse(data)
         local spell = line.spellID
         if type(spell) == "number" and not isSecret(spell) then result.spell = spell end
         local text = Text(line.leftText)
+        if line.isValidInvSlot ~= nil then result.slotLine = true end
         if text == knownText then
             result.known = true
+        elseif text == lookMissing then
+            result.lookMissing = true
+        elseif text == lookOwned or text == lookOwnedOther then
+            result.lookOwned = true
         elseif text then
             local prof, level = text:match(SkillPattern())
             if prof then
@@ -103,6 +112,28 @@ Recipe.ENCHANT_SLOTS = {
     boots = "INVTYPE_FEET", bracer = "INVTYPE_WRIST", gloves = "INVTYPE_HAND", cloak = "INVTYPE_CLOAK",
     chest = "INVTYPE_CHEST", shield = "INVTYPE_SHIELD", ["2h weapon"] = "INVTYPE_2HWEAPON",
 }
+
+-- Slots that have an appearance you can collect.
+Recipe.TRANSMOG = {
+    INVTYPE_HEAD = true, INVTYPE_SHOULDER = true, INVTYPE_BODY = true, INVTYPE_CHEST = true, INVTYPE_ROBE = true,
+    INVTYPE_WAIST = true, INVTYPE_LEGS = true, INVTYPE_FEET = true, INVTYPE_WRIST = true, INVTYPE_HAND = true,
+    INVTYPE_CLOAK = true, INVTYPE_TABARD = true, INVTYPE_WEAPON = true, INVTYPE_SHIELD = true,
+    INVTYPE_2HWEAPON = true, INVTYPE_WEAPONMAINHAND = true, INVTYPE_WEAPONOFFHAND = true,
+    INVTYPE_HOLDABLE = true, INVTYPE_RANGED = true, INVTYPE_RANGEDRIGHT = true,
+}
+
+-- "owned" when you've collected the crafted item's appearance, "missing" when you haven't,
+-- nil when it has none or the tooltip isn't complete yet. Measured on Forever: the game only
+-- writes the "haven't collected" line; a collected appearance simply has no line.
+function Recipe.Look(info)
+    if info.lookMissing then return "missing" end
+    if info.lookOwned then return "owned" end
+    if not (info.crafted and info.slotLine) then return nil end
+    local _, _, _, equipLoc = ItemInstant(info.crafted)
+    equipLoc = Text(equipLoc)
+    if equipLoc and Recipe.TRANSMOG[equipLoc] then return "owned" end
+    return nil
+end
 
 -- Short label for what the recipe makes: the localized slot ("Feet", "Back"),
 -- or the item subtype ("Potion", "Bag") for things you don't wear.
@@ -139,6 +170,7 @@ function Recipe.ForMerchantItem(index)
     local name = data and data.lines and data.lines[1] and data.lines[1].leftText
     info.recipeID = recipeID
     info.label = Recipe.Label(info.crafted, name)
+    info.look = Recipe.Look(info)
     if ns.Alts then info.alts = ns.Alts.For(info) end
     return info
 end

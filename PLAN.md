@@ -58,7 +58,8 @@ The hard part is finding which item a recipe makes, and its slot, without a big 
   Unverified on Forever: whether `C_TradeSkillUI.GetAllRecipeIDs`/`GetRecipeInfo` work there (classic `GetTradeSkillInfo` is the fallback), and whether the recipe tooltip's `spellID` equals the profession recipe ID (item and name matching cover it if not)
 - [x] **In-game check of alts:** first try failed (2026-11-23): Jhon Dicc saw no yellow at Jim'bek. Saved file had Durga's skills (Tailoring 111, Enchanting 105 via `GetProfessions`) but no recipes (`profs = {}`), and realm saved as "" (`Durga-`). Added: every scan saves what each profession API answered to `RecipeScoutDB.lastScan` (`/rs debug`), classic Craft API path (Enchanting), `GetNormalizedRealmName` fallback and moving a `Name-` record once the realm is known. Next: Durga opens Tailoring and Enchanting, `/reload`, agent reads the saved file
   Second try works (2026-11-23): Forever uses the modern API (`C_TradeSkillUI`, 262 recipe IDs for Enchanting, `ProfessionsFrame`); Jhon Dicc sees Shadow Gown and Shadow Circle in yellow. Realm stays "" on Forever (both realm APIs empty); keys still match
-- [ ] **Appearance collected:** use the transmog API if the probe shows it answers
+- [~] **Appearance collected:** probe data (Jim'bek): 64 gear recipes carry "You haven't collected this appearance", the one gear recipe without it is known (Shadow Gloves, most likely crafted), no positive "collected" line ever. Rule: transmoggable gear whose slot line loaded and has no "haven't collected" line = collected. Transmog icon on the merchant icon and panel row, "Hide owned looks" in the panel, `/rs` says "look owned"
+- [ ] **In-game check of appearances:** a recipe whose item you own or have worn shows the icon; others don't (maintainer)
 - [ ] **Settings panel and addon compartment:** same pattern as DistanceToTarget
 
 ## 5. Release

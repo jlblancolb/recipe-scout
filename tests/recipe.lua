@@ -184,6 +184,26 @@ for _, f in ipairs(created) do
 end
 check(MerchantFrame.page == 1 and ns.highlight == nil, "jump to item 5 on page 1, glow cleared after the timer")
 
+-- Appearances: gear without the "haven't collected" line counts as owned, once the slot line loaded.
+local function Gear(extra)
+    local data = { lines = {
+        { type = 22, leftText = "Pattern: Silky Boots" },
+        { type = 19, leftText = "", tooltipID = 253891, tooltipType = 0 },
+        { type = 21, leftText = "Feet", rightText = "Cloth", isValidInvSlot = true },
+    } }
+    if extra then data.lines[#data.lines + 1] = { type = 0, leftText = extra } end
+    return R.Parse(data)
+end
+check(R.Look(Gear()) == "owned", "gear with no line: owned")
+check(R.Look(Gear("You haven't collected this appearance")) == "missing", "gear with the line: missing")
+check(R.Look(Gear("You've collected this appearance, but not from this item")) == "owned", "collected from another item")
+local loading = R.Parse({ lines = { { type = 19, leftText = "", tooltipID = 253891, tooltipType = 0 } } })
+check(R.Look(loading) == nil, "nested item not loaded yet: unknown, not owned")
+local bag = R.Parse({ lines = { { type = 19, leftText = "", tooltipID = 254079, tooltipType = 0 },
+    { type = 0, leftText = "14 Slot Reagent Bag", isValidInvSlot = false } } })
+check(R.Look(bag) == nil, "bags have no appearance")
+check(R.ForMerchantItem(1).look == nil, "merchant boots without slot line: unknown")
+
 -- Robes use the chest name, held-in-off-hand items the short off-hand name.
 items[700001] = { "Armor", "Cloth", "INVTYPE_ROBE", 4 }
 items[700002] = { "Armor", "Miscellaneous", "INVTYPE_HOLDABLE", 4 }
