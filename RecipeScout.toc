@@ -2,7 +2,7 @@
 ## Title: RecipeScout
 ## Notes: Shows what each recipe on a merchant makes (Feet, Chest, Potion...) and marks the ones you know.
 ## Author: jlblancolb
-## Version: 0.2.0
+## Version: 0.3.0
 ## IconTexture: 134939
 ## SavedVariables: RecipeScoutDB
 

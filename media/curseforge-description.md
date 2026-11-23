@@ -1,6 +1,6 @@
 # RecipeScout
 
-**Which of these 70 patterns are boots?** RecipeScout labels every recipe a merchant sells with what it makes, marks the ones you or your alts already know, and lets you filter all pages at once.
+**Which of these 70 patterns are boots?** RecipeScout labels every recipe a merchant sells with what it makes, marks the ones you or your alts already know, flags looks you already own, and lets you filter all pages at once.
 
 ![RecipeScout next to a recipe merchant: slot badges on every icon and the side panel listing all pages](https://raw.githubusercontent.com/jlblancolb/recipe-scout/main/media/screenshots/panel.png)
 
@@ -35,6 +35,13 @@ Open each crafter's profession window once and RecipeScout remembers what they k
 - `/rs alts` lists your characters and their recipe counts; `/rs forget <name>` removes one.
 
 ![Alts: Durga already knows Shadow Gown and Shadow Circle, so they show in yellow with that name](https://raw.githubusercontent.com/jlblancolb/recipe-scout/main/media/screenshots/alts.png)
+
+## Appearances
+
+- Gear recipes whose **appearance you already collected** get the transmog icon, on the merchant and in the panel.
+- Tick **Hide owned** in the panel to keep only recipes that give you a new look.
+
+![Appearances: Shadow Gloves is the only Hands pattern whose look is already collected](https://raw.githubusercontent.com/jlblancolb/recipe-scout/main/media/screenshots/appearances.png)
 
 ## Plays nicely
 

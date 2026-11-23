@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.3.0 (2026-11-23)
+
+- Appearances: gear recipes whose look you already collected get the transmog icon, on the merchant and in the panel.
+- **Hide owned** in the panel keeps only recipes that give you a new look (remembered).
+- Hover the panel's checkboxes for what they do.
+- `/rs` says "(look owned)".
+
 ## 0.2.0 (2026-11-23)
 
 - Alts: each character's recipes are remembered when their profession window opens. Recipes another character knows are yellow, with that character's name next to the price and in the panel.
