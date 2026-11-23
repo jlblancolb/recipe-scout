@@ -1,6 +1,6 @@
 # RecipeScout
 
-**Which of these 70 patterns are boots?** RecipeScout labels every recipe a merchant sells with what it makes, marks the ones you already know, and lets you filter all pages at once. Made for the Merchant's Favor vendors on WoW Forever, and works at every recipe merchant.
+**Which of these 70 patterns are boots?** RecipeScout labels every recipe a merchant sells with what it makes, marks the ones you already know, and lets you filter all pages at once.
 
 ## What you see
 
@@ -20,11 +20,8 @@ Close it with the X; the **Recipes** button on the merchant brings it back. `/rs
 
 ## Plays nicely
 
+- Works with every profession and every recipe merchant.
 - Reads the game's own item data: no recipe database to go out of date, and labels follow your game language.
 - Only adds its own labels and panel; never hides or moves merchant items, so tooltip, profession and known-item addons keep working.
-
-## Compatibility
-
-WoW Forever (1.60.1).
 
 Source and issues: [github.com/jlblancolb/recipe-scout](https://github.com/jlblancolb/recipe-scout)
