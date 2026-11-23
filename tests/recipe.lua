@@ -301,6 +301,42 @@ ns.Alts.AddTooltipLines(tip, bootsData)
 check(#tip.lines == 0, "tooltip off: no lines")
 ns.SetSetting("tooltip", true)
 
+-- Buying from the panel: right-click confirms, accept buys one, a changed list buys nothing.
+local popup, bought = nil, {}
+StaticPopupDialogs = {}
+function StaticPopup_Show(which, text, _, data) popup = { which = which, text = text, data = data } end
+function BuyMerchantItem(index, quantity) bought[#bought + 1] = { index, quantity } end
+function GetMerchantItemCostInfo() return 1 end
+function GetMerchantItemCostItem() return 135725, 30, "link", "Merchant's Favor" end
+local function RowFor(index)
+    for _, f in ipairs(created) do
+        if f.kind == "Button" and rawget(f, "index") == index and f.shown then return f end
+    end
+end
+for _, f in ipairs(created) do
+    if rawget(f, "label") == false and rawget(f, "onOnClick") then f.onOnClick(f) end -- "All"
+end
+local bootsRow = RowFor(1)
+bootsRow.onOnClick(bootsRow, "RightButton")
+check(popup and popup.which == "RECIPESCOUT_BUY", "right-click asks to confirm")
+check(popup.text:find("Pattern: Silky Boots") and popup.text:find("30 .*Merchant's Favor"), "confirm shows name and cost: " .. popup.text)
+check(popup.text:find("Already known by .*Durga"), "confirm warns that an alt knows it")
+check(#bought == 0, "nothing bought before accepting")
+StaticPopupDialogs.RECIPESCOUT_BUY.OnAccept(nil, popup.data)
+check(#bought == 1 and bought[1][1] == 1 and bought[1][2] == 1, "accept buys one of item 1")
+
+local glovesRow = RowFor(2)
+glovesRow.onOnClick(glovesRow, "RightButton")
+check(popup.text:find("You already know this recipe"), "confirm warns when you know it")
+merchant[2][1] = 999001 -- the list changed before accepting
+StaticPopupDialogs.RECIPESCOUT_BUY.OnAccept(nil, popup.data)
+check(#bought == 1 and chat[#chat]:find("list changed"), "changed list: nothing bought")
+merchant[2][1] = 253920
+
+-- Left-click still jumps, never buys.
+bootsRow.onOnClick(bootsRow, "LeftButton")
+check(#bought == 1, "left-click doesn't buy")
+
 openedCategory = nil
 SlashCmdList.RECIPESCOUT("settings")
 check(openedCategory == 42, "/rs settings opens the page")

@@ -179,6 +179,7 @@ function Recipe.ForMerchantItem(index)
     end
     local name = data and data.lines and data.lines[1] and data.lines[1].leftText
     info.recipeID = recipeID
+    info.title = Text(name)
     info.label = Recipe.Label(info.crafted, name)
     info.look = Recipe.Look(info)
     if ns.Alts and ns.Opt("alts") then info.alts = ns.Alts.For(info) end

@@ -24,7 +24,11 @@ files["Options.lua"] = {
         "RecipeScout_OnAddonCompartmentLeave" },
     read_globals = { "Settings", "WOW_PROJECT_ID", "WOW_PROJECT_CLASSIC", "InCombatLockdown", unpack(wow) },
 }
-files["Panel.lua"] = { globals = { "RecipeScoutDB", "MerchantFrame" }, read_globals = wow }
+files["Panel.lua"] = {
+    globals = { "RecipeScoutDB", "MerchantFrame", "StaticPopupDialogs" },
+    read_globals = { "StaticPopup_Show", "BuyMerchantItem", "GetMoneyString", "GetMerchantItemCostInfo",
+        "GetMerchantItemCostItem", "PURCHASE", "CANCEL", unpack(wow) },
+}
 files["RecipeScout.lua"] = {
     globals = { "SLASH_RECIPESCOUT1", "SLASH_RECIPESCOUT2", "SlashCmdList", "RecipeScoutDB" },
     read_globals = { "MerchantFrame", unpack(wow) },

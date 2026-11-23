@@ -38,9 +38,10 @@ local function Collect()
                 local ok, item = pcall(C_MerchantFrame.GetItemInfo, index)
                 if ok and item then name, icon, usable = item.name, item.texture, item.isUsable end
             end
-            name = Plain(name) or ""
+            name = Plain(name) or info.title or ""
             entries[#entries + 1] = {
-                index = index, label = info.label or "?", known = info.known, usable = usable ~= false,
+                index = index, itemID = info.recipeID, label = info.label or "?", known = info.known,
+                usable = usable ~= false,
                 altKnown = not info.known and info.alts ~= nil and #info.alts.known > 0,
                 alts = info.alts and info.alts.known,
                 lookOwned = info.look == "owned",
@@ -71,6 +72,66 @@ local function JumpTo(index)
     end)
 end
 
+-- What the merchant asks for item `index`: gold and/or currencies and items, as tooltip text.
+local function CostText(index)
+    local parts = {}
+    if C_MerchantFrame and C_MerchantFrame.GetItemInfo then
+        local ok, item = pcall(C_MerchantFrame.GetItemInfo, index)
+        local price = ok and item and item.price
+        if type(price) == "number" and not (issecretvalue and issecretvalue(price)) and price > 0 then
+            parts[#parts + 1] = GetMoneyString and GetMoneyString(price) or (price .. " copper")
+        end
+    end
+    local okCount, count = pcall(GetMerchantItemCostInfo, index)
+    for costIndex = 1, (okCount and tonumber(count)) or 0 do
+        local ok, texture, value, _, name = pcall(GetMerchantItemCostItem, index, costIndex)
+        if ok and type(value) == "number" and value > 0 then
+            local icon = texture and ("|T" .. tostring(texture) .. ":0|t ") or ""
+            parts[#parts + 1] = value .. " " .. icon .. (Plain(name) or "")
+        end
+    end
+    return #parts > 0 and table.concat(parts, " + ") or nil
+end
+Panel.CostText = CostText
+
+-- Right-click a row: confirm, then buy one. The merchant slot is checked again on accept,
+-- so a list that changed in between (limited stock) never buys the wrong item.
+local function ConfirmBuy(entry)
+    if not (StaticPopup_Show and StaticPopupDialogs and BuyMerchantItem) then
+        ns.Say("buying from the panel isn't available in this client; buy it on the merchant page.")
+        return
+    end
+    if not StaticPopupDialogs.RECIPESCOUT_BUY then
+        StaticPopupDialogs.RECIPESCOUT_BUY = {
+            text = "%s",
+            button1 = PURCHASE or "Purchase",
+            button2 = CANCEL or "Cancel",
+            OnAccept = function(dialog, data)
+                data = data or (dialog and dialog.data)
+                if type(data) ~= "table" then return end
+                local current = GetMerchantItemID and GetMerchantItemID(data.index)
+                if current ~= data.itemID then
+                    ns.Say("the merchant's list changed; nothing bought. Try again.")
+                    return
+                end
+                BuyMerchantItem(data.index, 1)
+            end,
+            timeout = 0, whileDead = true, hideOnEscape = true, preferredIndex = 3,
+        }
+    end
+    local text = "Buy " .. entry.name
+    local cost = CostText(entry.index)
+    if cost then text = text .. "\nfor " .. cost end
+    text = text .. "?"
+    if entry.known then
+        text = text .. "\n\n|cffff4040You already know this recipe.|r"
+    elseif entry.alts and #entry.alts > 0 then
+        text = text .. "\n\n|cffffd100Already known by " .. table.concat(entry.alts, ", ") .. "|cffffd100.|r"
+    end
+    StaticPopup_Show("RECIPESCOUT_BUY", text, nil, { index = entry.index, itemID = entry.itemID })
+end
+Panel.ConfirmBuy = ConfirmBuy
+
 local function Row(i)
     if rows[i] then return rows[i] end
     local row = CreateFrame("Button", nil, content)
@@ -95,10 +156,20 @@ local function Row(i)
     row.name:SetPoint("RIGHT", row.slot, "LEFT", -4, 0)
     row.name:SetJustifyH("LEFT")
     row.name:SetWordWrap(false)
-    row:SetScript("OnClick", function(self) JumpTo(self.index) end)
+    row:RegisterForClicks("LeftButtonUp", "RightButtonUp")
+    row:SetScript("OnClick", function(self, mouseButton)
+        if mouseButton == "RightButton" then
+            ConfirmBuy(self.entry)
+        else
+            JumpTo(self.index)
+        end
+    end)
     row:SetScript("OnEnter", function(self)
         GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
         pcall(GameTooltip.SetMerchantItem, GameTooltip, self.index)
+        local cost = CostText(self.index)
+        if cost then GameTooltip:AddLine("Price: " .. cost, 1, 1, 1) end
+        GameTooltip:AddLine("Click: show on the merchant page   Right-click: buy", 0.4, 0.8, 1)
         GameTooltip:Show()
     end)
     row:SetScript("OnLeave", function() GameTooltip:Hide() end)
@@ -165,6 +236,7 @@ function Panel.Refresh()
             shown = shown + 1
             local row = Row(shown)
             row.index = entry.index
+            row.entry = entry
             row.icon:SetTexture(entry.icon)
             local known = entry.known and Opt("known")
             row.check:SetShown((known or entry.altKnown) and true or false)
