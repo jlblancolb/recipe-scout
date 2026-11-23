@@ -159,6 +159,12 @@ local function VisibleRows()
     return #names
 end
 check(VisibleRows() == 4, "panel lists 4 recipes, got " .. VisibleRows())
+for _, f in ipairs(created) do
+    if f.kind == "Button" and rawget(f, "index") == 1 and f.shown then
+        check(f.slot.text:find("Durga") and f.slot.text:find("Feet"), "panel row names the alt, got: " .. tostring(f.slot.text))
+    end
+end
+check(ns.AltNames({ "Durga", "Thrall", "Jaina" }):find("Durga.*%+2"), "several alts shown as +N")
 -- Slot chip "Hands" filters to the gloves.
 for _, f in ipairs(created) do
     if rawget(f, "label") == "Hands" and rawget(f, "onOnClick") then f.onOnClick(f) end

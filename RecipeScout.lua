@@ -11,6 +11,13 @@ local CHECK_TEXTURE = "Interface\\RaidFrame\\ReadyCheck-Ready"
 
 local overlays = {}
 
+-- "Durga", or "Durga +2" when several characters know it.
+function ns.AltNames(names)
+    if not names or #names == 0 then return "" end
+    if #names == 1 then return names[1] end
+    return names[1] .. " |cffffd100+" .. (#names - 1) .. "|r"
+end
+
 local function ItemButton(slot)
     local row = _G["MerchantItem" .. slot]
     return row, (row and (row.ItemButton or _G["MerchantItem" .. slot .. "ItemButton"]))
@@ -53,8 +60,16 @@ local function Overlay(slot)
     glow:SetBlendMode("ADD")
     glow:SetAllPoints(overlay)
 
+    -- Who else knows it: a name next to the price, e.g. "Durga" or "Durga +1".
+    local whoFrame = CreateFrame("Frame", nil, row)
+    whoFrame:SetAllPoints(row)
+    local who = whoFrame:CreateFontString(nil, "OVERLAY")
+    who:SetFont(STANDARD_TEXT_FONT, 10, "OUTLINE")
+    who:SetPoint("BOTTOMRIGHT", row, "BOTTOMRIGHT", -4, 5)
+    who:SetJustifyH("RIGHT")
+
     overlays[slot] = {
-        frame = overlay, strip = strip, label = label, check = check, row = row, tint = tint, glow = glow,
+        frame = overlay, strip = strip, label = label, check = check, row = row, tint = tint, glow = glow, who = who,
     }
     return overlays[slot]
 end
@@ -63,6 +78,7 @@ local function HideAll()
     for _, overlay in pairs(overlays) do
         overlay.frame:Hide()
         overlay.tint:Hide()
+        overlay.who:SetText("")
     end
 end
 
@@ -104,10 +120,12 @@ local function Update()
                 end
                 overlay.check:SetShown(info.known or altKnown)
                 overlay.tint:SetShown(info.known)
+                overlay.who:SetText(altKnown and ns.AltNames(info.alts.known) or "")
                 overlay.frame:Show()
             else
                 overlay.frame:Hide()
                 overlay.tint:Hide()
+                overlay.who:SetText("")
             end
             overlay.glow:SetShown(ns.highlight ~= nil and ns.highlight == index)
         end

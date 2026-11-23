@@ -41,6 +41,7 @@ local function Collect()
             entries[#entries + 1] = {
                 index = index, label = info.label or "?", known = info.known, usable = usable ~= false,
                 altKnown = not info.known and info.alts ~= nil and #info.alts.known > 0,
+                alts = info.alts and info.alts.known,
                 name = name, short = name:match("^[^:]+:%s*(.+)$") or name, icon = icon,
             }
         end
@@ -135,13 +136,13 @@ local function LayoutChips()
         end
         chip:SetSize(width, CHIP_H)
         chip:ClearAllPoints()
-        chip:SetPoint("TOPLEFT", x, -84 - y)
+        chip:SetPoint("TOPLEFT", x, -98 - y)
         x = x + width
         if (filter.slot or false) == label then chip:LockHighlight() else chip:UnlockHighlight() end
         chip:Show()
     end
     for i = #order + 1, #chips do chips[i]:Hide() end
-    return 84 + y + CHIP_H + 4
+    return 98 + y + CHIP_H + 4
 end
 
 function Panel.Refresh()
@@ -171,7 +172,11 @@ function Panel.Refresh()
             else
                 row.name:SetTextColor(1, 1, 1)
             end
-            row.slot:SetText(entry.label)
+            if entry.altKnown then
+                row.slot:SetText(ns.AltNames(entry.alts) .. " |cff808080·|r " .. entry.label)
+            else
+                row.slot:SetText(entry.label)
+            end
             row:Show()
         end
     end
@@ -220,6 +225,9 @@ local function Build()
     local hideText = hideKnown:CreateFontString(nil, "OVERLAY", "GameFontHighlightSmall")
     hideText:SetPoint("LEFT", hideKnown, "RIGHT", 2, 0)
     hideText:SetText("Hide known")
+    local key = panel:CreateFontString(nil, "OVERLAY", "GameFontDisableSmall")
+    key:SetPoint("TOPLEFT", 12, -80)
+    key:SetText("|cff40ff40Green|r: you know it  |cffffd100Yellow|r: an alt does")
     hideKnown:SetScript("OnClick", function(self)
         DB().hideKnown = self:GetChecked() and true or false
         Panel.Refresh()
