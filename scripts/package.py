@@ -6,7 +6,7 @@ from zipfile import ZIP_DEFLATED, ZipFile, ZipInfo
 
 ROOT = Path(__file__).resolve().parent.parent
 FILES = (
-    "RecipeScout.toc", "Recipe.lua", "Alts.lua", "Panel.lua", "RecipeScout.lua", "README.md", "CHANGELOG.md", "LICENSE",
+    "RecipeScout.toc", "Recipe.lua", "Alts.lua", "Panel.lua", "Options.lua", "RecipeScout.lua", "README.md", "CHANGELOG.md", "LICENSE",
 )
 
 

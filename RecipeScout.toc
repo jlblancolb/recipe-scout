@@ -5,8 +5,12 @@
 ## Version: 0.3.0
 ## IconTexture: 134939
 ## SavedVariables: RecipeScoutDB
+## AddonCompartmentFunc: RecipeScout_OnAddonCompartmentClick
+## AddonCompartmentFuncOnEnter: RecipeScout_OnAddonCompartmentEnter
+## AddonCompartmentFuncOnLeave: RecipeScout_OnAddonCompartmentLeave
 
 Recipe.lua
 Alts.lua
 Panel.lua
+Options.lua
 RecipeScout.lua

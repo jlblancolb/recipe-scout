@@ -3,14 +3,14 @@
 set -eu
 cd "$(dirname "$0")/.."
 if command -v lua5.1 >/dev/null 2>&1; then
-    luac5.1 -p Recipe.lua Alts.lua Panel.lua RecipeScout.lua probe/RSProbe/*.lua tests/*.lua
+    luac5.1 -p Recipe.lua Alts.lua Panel.lua Options.lua RecipeScout.lua probe/RSProbe/*.lua tests/*.lua
     run() { lua5.1 "$@"; }
 else
     echo "lua5.1 not found; running tests with fengari (no syntax check)"
     run() { npm exec --yes --package=fengari-node-cli -- fengari "$@"; }
 fi
 if command -v luacheck >/dev/null 2>&1; then
-    luacheck Recipe.lua Alts.lua Panel.lua RecipeScout.lua probe/RSProbe tests
+    luacheck Recipe.lua Alts.lua Panel.lua Options.lua RecipeScout.lua probe/RSProbe tests
 else
     echo "luacheck not found; skipping lint"
 fi

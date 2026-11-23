@@ -10,7 +10,7 @@ local wow = {
     "TRANSMOGRIFY_TOOLTIP_ITEM_UNKNOWN_APPEARANCE_KNOWN",
 }
 
-files["Recipe.lua"] = { read_globals = wow }
+files["Recipe.lua"] = { read_globals = { "RecipeScoutDB", unpack(wow) } }
 files["Alts.lua"] = {
     globals = { "RecipeScoutDB" },
     read_globals = { "C_TradeSkillUI", "Enum", "GetNumSkillLines", "GetNumTradeSkills", "GetProfessionInfo",
@@ -18,6 +18,11 @@ files["Alts.lua"] = {
         "GetCraftInfo", "GetCraftItemLink", "date", "GetSkillLineInfo", "GetTradeSkillInfo", "GetTradeSkillItemLink",
         "GetTradeSkillLine", "GetTradeSkillRecipeLink", "ItemRefTooltip", "RAID_CLASS_COLORS", "TooltipDataProcessor",
         "UnitClass", "UnitName", "time", "unpack", unpack(wow) },
+}
+files["Options.lua"] = {
+    globals = { "RecipeScoutDB", "RecipeScout_OnAddonCompartmentClick", "RecipeScout_OnAddonCompartmentEnter",
+        "RecipeScout_OnAddonCompartmentLeave" },
+    read_globals = { "Settings", "WOW_PROJECT_ID", "WOW_PROJECT_CLASSIC", "InCombatLockdown", unpack(wow) },
 }
 files["Panel.lua"] = { globals = { "RecipeScoutDB", "MerchantFrame" }, read_globals = wow }
 files["RecipeScout.lua"] = {

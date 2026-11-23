@@ -310,6 +310,7 @@ end
 -- Extra tooltip lines for any recipe tooltip (merchant, bags, auction house).
 function Alts.AddTooltipLines(tooltip, data)
     if not tooltip or type(data) ~= "table" then return end
+    if not (ns.Opt("enabled") and ns.Opt("tooltip")) then return end
     local id = Plain(data.id)
     if type(id) ~= "number" or not Recipe.IsRecipe(id) then return end
     local alts = Alts.For(Recipe.Parse(data))

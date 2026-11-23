@@ -20,6 +20,7 @@ local function DB()
     if RecipeScoutDB.panelShown == nil then RecipeScoutDB.panelShown = true end
     return RecipeScoutDB
 end
+local Opt = ns.Opt
 
 local function Plain(text)
     if type(text) ~= "string" or (issecretvalue and issecretvalue(text)) then return nil end
@@ -165,11 +166,12 @@ function Panel.Refresh()
             local row = Row(shown)
             row.index = entry.index
             row.icon:SetTexture(entry.icon)
-            row.check:SetShown(entry.known or entry.altKnown)
+            local known = entry.known and Opt("known")
+            row.check:SetShown((known or entry.altKnown) and true or false)
             row.check:SetDesaturated(entry.altKnown)
             if entry.altKnown then row.check:SetVertexColor(1, 0.82, 0) else row.check:SetVertexColor(1, 1, 1) end
             row.name:SetText(entry.short)
-            if entry.known then
+            if known then
                 row.name:SetTextColor(KNOWN[1], KNOWN[2], KNOWN[3])
             elseif entry.altKnown then
                 row.name:SetTextColor(1, 0.82, 0)
@@ -178,7 +180,7 @@ function Panel.Refresh()
             else
                 row.name:SetTextColor(1, 1, 1)
             end
-            row.look:SetShown(entry.lookOwned)
+            row.look:SetShown((entry.lookOwned and Opt("looks")) and true or false)
             if entry.altKnown then
                 row.slot:SetText(ns.AltNames(entry.alts) .. " |cff808080·|r " .. entry.label)
             else
@@ -276,23 +278,27 @@ local function Build()
     end)
 end
 
+-- The close button and the Recipes button change the same setting as the settings page.
+function Panel.SetShownSetting(shown)
+    if ns.SetSetting then
+        ns.SetSetting("panelShown", shown)
+    else
+        DB().panelShown = shown
+        Panel.Update()
+    end
+end
+
 -- Small tab outside the merchant's right edge, shown only while the panel is closed.
 local function BuildToggle()
     toggle = CreateFrame("Button", nil, MerchantFrame, "UIPanelButtonTemplate")
     toggle:SetSize(70, 20)
     toggle:SetText("Recipes")
     toggle:SetPoint("TOPLEFT", MerchantFrame, "TOPRIGHT", 2, -4)
-    toggle:SetScript("OnClick", function()
-        DB().panelShown = true
-        Panel.Update()
-    end)
+    toggle:SetScript("OnClick", function() Panel.SetShownSetting(true) end)
     local close = CreateFrame("Button", nil, panel, "UIPanelCloseButton")
     close:SetSize(22, 22)
     close:SetPoint("TOPRIGHT", -2, -2)
-    close:SetScript("OnClick", function()
-        DB().panelShown = false
-        Panel.Update()
-    end)
+    close:SetScript("OnClick", function() Panel.SetShownSetting(false) end)
 end
 
 -- Called whenever the merchant changes: rebuild the list, show the panel only if there are recipes.
@@ -303,7 +309,7 @@ function Panel.Update()
         BuildToggle()
     end
     Collect()
-    local has = #entries > 0 and (MerchantFrame.selectedTab or 1) == 1
+    local has = #entries > 0 and (MerchantFrame.selectedTab or 1) == 1 and Opt("enabled")
     toggle:SetShown(has and not DB().panelShown)
     if has and DB().panelShown then
         if panel:IsShown() then Panel.Refresh() else panel:Show() end

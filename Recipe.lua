@@ -9,6 +9,16 @@ ns = ns or {}
 local Recipe = {}
 ns.Recipe = Recipe
 
+-- Settings, all on by default. Read through ns.Opt so a missing key means its default.
+ns.DEFAULTS = {
+    enabled = true, badges = true, known = true, alts = true, looks = true, tooltip = true, panelShown = true,
+}
+function ns.Opt(key)
+    local db = RecipeScoutDB
+    if type(db) ~= "table" or db[key] == nil then return ns.DEFAULTS[key] end
+    return db[key]
+end
+
 local RECIPE_CLASS = 9 -- Enum.ItemClass.Recipe
 
 local isSecret = function(value)
@@ -171,7 +181,7 @@ function Recipe.ForMerchantItem(index)
     info.recipeID = recipeID
     info.label = Recipe.Label(info.crafted, name)
     info.look = Recipe.Look(info)
-    if ns.Alts then info.alts = ns.Alts.For(info) end
+    if ns.Alts and ns.Opt("alts") then info.alts = ns.Alts.For(info) end
     return info
 end
 

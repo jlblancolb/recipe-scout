@@ -66,6 +66,7 @@ local function NewRegion()
     region.CreateFontString = function() return NewRegion() end
     region.SetScript = function(self, name, callback) self["on" .. name] = callback end
     region.HookScript = noop
+    region.RegisterEvent = function(self, event) rawset(self, "events", rawget(self, "events") or {}); self.events[event] = true end
     region.SetChecked = function(self, value) self.checked = value end
     region.GetChecked = function(self) return self.checked end
     return region
@@ -109,6 +110,25 @@ RecipeScoutDB = { chars = { ["Durga-Nightslayer"] = { name = "Durga", realm = "N
     profs = { Tailoring = { items = { [253891] = true }, spells = {}, names = {} } } } } }
 assert(loadfile("Alts.lua"))("RecipeScout", ns)
 assert(loadfile("Panel.lua"))("RecipeScout", ns)
+-- Blizzard's settings API, as much as Options.lua uses.
+local settings, openedCategory = {}, nil
+Settings = {
+    VarType = { Boolean = "boolean" },
+    RegisterVerticalLayoutCategory = function(name) return { name = name, GetID = function() return 42 end }, {} end,
+    RegisterAddOnSetting = function(_, _, key, tbl)
+        local setting = { key = key }
+        function setting.GetValue() return tbl[key] end
+        function setting:SetValue(value) tbl[key] = value; if self.callback then self.callback(nil, value) end end
+        function setting:SetValueChangedCallback(callback) self.callback = callback end
+        settings[key] = setting
+        return setting
+    end,
+    CreateCheckbox = function() end,
+    RegisterAddOnCategory = function() end,
+    OpenToCategory = function(id) openedCategory = id end,
+}
+function InCombatLockdown() return false end
+assert(loadfile("Options.lua"))("RecipeScout", ns)
 assert(loadfile("RecipeScout.lua"))("RecipeScout", ns)
 local R = ns.Recipe
 
@@ -221,5 +241,68 @@ check(not panel.shown, "panel hidden on buyback")
 MerchantFrame.selectedTab = 1
 hooks.MerchantFrame_Update()
 check(panel.shown, "panel back on the merchant tab")
+
+-- Settings ------------------------------------------------------------------
+local mainEvents
+for _, f in ipairs(created) do
+    local registered = rawget(f, "events")
+    if registered and registered.ADDON_LOADED then mainEvents = f end
+end
+check(mainEvents, "main file listens for ADDON_LOADED")
+mainEvents.onOnEvent(mainEvents, "ADDON_LOADED", "RecipeScout")
+for _, key in ipairs({ "enabled", "badges", "known", "alts", "looks", "tooltip", "panelShown" }) do
+    check(RecipeScoutDB[key] ~= nil, "default applied for " .. key)
+    check(settings[key], "settings page has " .. key)
+end
+
+hooks.MerchantFrame_Update()
+local first = ns.overlays[1]
+check(first.label.text == "Feet", "badge shown by default, got " .. tostring(first.label.text))
+settings.badges:SetValue(false)
+check(first.label.text == "", "badges off hides the slot label")
+settings.badges:SetValue(true)
+check(first.label.text == "Feet", "badges back on")
+
+check(ns.overlays[2].check.shown, "gloves known: check shown")
+ns.SetSetting("known", false)
+check(not ns.overlays[2].check.shown, "known off hides the check")
+ns.SetSetting("known", true)
+
+check(first.who.text:find("Durga"), "alt name shown")
+ns.SetSetting("alts", false)
+check(first.who.text == "", "alts off hides the alt name")
+ns.SetSetting("alts", true)
+
+-- The panel's X and the settings checkbox are the same setting.
+check(panel.shown, "panel open")
+ns.Panel.SetShownSetting(false)
+check(not panel.shown and settings.panelShown:GetValue() == false, "X closes the panel and unticks the setting")
+settings.panelShown:SetValue(true)
+check(panel.shown, "ticking the setting opens the panel again")
+
+-- Minimap menu: right-click turns everything off and on.
+RecipeScout_OnAddonCompartmentClick(nil, "RightButton")
+check(not RecipeScoutDB.enabled and not panel.shown and not first.frame.shown, "right-click turns it off")
+check(chat[#chat]:find("off"), "says off")
+RecipeScout_OnAddonCompartmentClick(nil, "RightButton")
+check(RecipeScoutDB.enabled and panel.shown, "right-click turns it on")
+RecipeScout_OnAddonCompartmentClick(nil, "LeftButton")
+check(openedCategory == 42, "left-click opens settings")
+
+-- Tooltip lines follow their setting.
+local tip = { lines = {} }
+function tip:AddLine(text) self.lines[#self.lines + 1] = text end
+local bootsData = { id = 253892, lines = merchant[1][2].lines }
+ns.Alts.AddTooltipLines(tip, bootsData)
+check(table.concat(tip.lines, " "):find("Known by: Durga"), "tooltip on: Known by line")
+tip.lines = {}
+ns.SetSetting("tooltip", false)
+ns.Alts.AddTooltipLines(tip, bootsData)
+check(#tip.lines == 0, "tooltip off: no lines")
+ns.SetSetting("tooltip", true)
+
+openedCategory = nil
+SlashCmdList.RECIPESCOUT("settings")
+check(openedCategory == 42, "/rs settings opens the page")
 
 print("recipe tests passed")
